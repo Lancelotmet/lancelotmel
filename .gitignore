@@ -1,0 +1,11 @@
+node_modules
+.next
+out
+dist
+.env*.local
+.env
+*.tsbuildinfo
+DatabasePasword.txt
+deploy-hostinger
+hostinger-static-public_html
+*.zip

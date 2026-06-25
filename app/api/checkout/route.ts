@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createSupabaseServerClient, hasSupabaseAdminConfig, useMarketplaceDemoMode } from "@/lib/supabase/server";
+import { createMercadoPagoPreference, hasMercadoPagoConfig } from "@/lib/marketplace/mercado-pago";
 import { buildCheckoutSummary } from "@/lib/marketplace/pricing";
 import { buildCheckoutLines } from "@/lib/marketplace/repository";
 import { createCheckoutSchema } from "@/lib/marketplace/validators";
@@ -90,6 +91,25 @@ export async function POST(request: NextRequest) {
 
     await supabase.from("orders").update({ checkout_session_id: session.id }).eq("id", order.id);
     return NextResponse.json({ checkoutUrl: session.url, orderId: order.id, summary });
+  }
+
+  if (payload.paymentProvider === "mercado_pago" && hasMercadoPagoConfig()) {
+    const preference = await createMercadoPagoPreference({
+      appUrl,
+      buyerEmail: payload.email,
+      lines,
+      orderId: order.id
+    });
+
+    await supabase
+      .from("orders")
+      .update({
+        checkout_session_id: preference.preferenceId,
+        payment_provider: "mercado_pago"
+      })
+      .eq("id", order.id);
+
+    return NextResponse.json({ checkoutUrl: preference.checkoutUrl, orderId: order.id, summary });
   }
 
   return NextResponse.json({

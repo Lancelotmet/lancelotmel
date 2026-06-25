@@ -15,7 +15,7 @@ export const createCheckoutSchema = z.object({
   items: z.array(checkoutItemSchema).min(1),
   couponCode: z.string().max(80).optional(),
   licenseAccepted: z.literal(true),
-  paymentProvider: z.enum(["demo", "stripe", "mercado_pago_future", "wompi_future"]).default("demo"),
+  paymentProvider: z.enum(["demo", "stripe", "mercado_pago", "wompi_future"]).default("mercado_pago"),
   studentTimezone: z.string().max(80).default("America/Bogota")
 });
 

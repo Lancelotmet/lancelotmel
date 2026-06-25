@@ -61,6 +61,9 @@ Backend only:
 - `SUPABASE_SERVICE_ROLE_KEY` or `SUPABASE_SECRET_KEY`
 - `STRIPE_SECRET_KEY`
 - `STRIPE_WEBHOOK_SECRET`
+- `MERCADO_PAGO_PUBLIC_KEY`
+- `MERCADO_PAGO_ACCESS_TOKEN`
+- `MERCADO_PAGO_USE_SANDBOX`
 - `RESEND_API_KEY` or `EMAIL_PROVIDER_KEY`
 - `ADMIN_ACCESS_TOKEN`
 - `APP_URL`
@@ -99,6 +102,7 @@ Then restart the dev server to exercise the real Supabase tables, RLS and privat
 - The endpoint validates active access, paid order, download limit and expiration before signing a URL.
 - Paid orders are assigned by webhook or backend demo payment, not by frontend state.
 - Bookings are confirmed only after payment validation.
+- Mercado Pago Checkout Pro is supported through `/api/checkout` and `/api/webhooks/payment?provider=mercado_pago`.
 - Middleware protects `/admin/marketplace` when `ADMIN_ACCESS_TOKEN` is set.
 - Critical inputs use Zod.
 - Critical backend actions write audit logs when Supabase is configured.

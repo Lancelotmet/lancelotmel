@@ -57,7 +57,7 @@ export function CheckoutClient({ products, prices, experiences }: CheckoutClient
         fullName,
         items,
         licenseAccepted,
-        paymentProvider: "demo",
+        paymentProvider: "mercado_pago",
         studentTimezone: timezone
       }),
       headers: { "Content-Type": "application/json" },
@@ -148,7 +148,7 @@ export function CheckoutClient({ products, prices, experiences }: CheckoutClient
         <button className="button gold" disabled={busy || !email || !licenseAccepted} onClick={checkout} type="button">
           {busy ? "Creating secure checkout..." : "Pay securely"}
         </button>
-        <p className="muted small">Demo mode creates a pending order, simulates payment validation and unlocks access after webhook logic runs.</p>
+        <p className="muted small">You will pay securely through Mercado Pago. Access is unlocked after payment confirmation.</p>
         {error ? <p className="status error">{error}</p> : null}
       </aside>
     </section>

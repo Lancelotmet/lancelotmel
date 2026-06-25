@@ -110,6 +110,9 @@ Pago y email:
 ```txt
 STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
+MERCADO_PAGO_PUBLIC_KEY=
+MERCADO_PAGO_ACCESS_TOKEN=
+MERCADO_PAGO_USE_SANDBOX=true
 DEMO_WEBHOOK_SECRET=
 RESEND_API_KEY=
 EMAIL_PROVIDER_KEY=
@@ -175,6 +178,42 @@ Probar:
 ```
 
 Si hay 502 en Render, revisar Logs del servicio.
+
+## Mercado Pago
+
+La integracion usa Checkout Pro:
+
+```txt
+Cliente -> /api/checkout -> preferencia Mercado Pago -> pago en Mercado Pago -> /api/webhooks/payment?provider=mercado_pago
+```
+
+Variables en Render:
+
+```txt
+MERCADO_PAGO_PUBLIC_KEY=TEST-...
+MERCADO_PAGO_ACCESS_TOKEN=TEST-...
+MERCADO_PAGO_USE_SANDBOX=true
+```
+
+Para produccion, reemplazar las credenciales `TEST-...` por credenciales productivas y cambiar:
+
+```txt
+MERCADO_PAGO_USE_SANDBOX=false
+```
+
+Webhook en Mercado Pago:
+
+```txt
+https://TU-DOMINIO.com/api/webhooks/payment?provider=mercado_pago
+```
+
+Mientras no tengas dominio propio apuntado a Render, usar:
+
+```txt
+https://TU-SERVICIO.onrender.com/api/webhooks/payment?provider=mercado_pago
+```
+
+Para Colombia, configura los productos reales en Supabase con moneda `COP`.
 
 ## Costos
 

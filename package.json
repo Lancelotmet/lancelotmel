@@ -9,7 +9,7 @@
     "dev": "next dev",
     "dev:3001": "next dev -H 127.0.0.1 -p 3001",
     "build": "next build && node scripts/prepare-standalone.mjs",
-    "start": "node .next/standalone/server.js",
+    "start": "node scripts/start-standalone.mjs",
     "start:3001": "set PORT=3001&& node .next/standalone/server.js",
     "typecheck": "tsc --noEmit",
     "test": "node --test tests/marketplace.test.mjs"

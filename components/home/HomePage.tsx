@@ -22,7 +22,7 @@ export function ButtonSecondary({ href, children }: { href: string; children: Re
 }
 
 export function SectionTitle({ eyebrow, title, copy, light = false }: { eyebrow: string; title: string; copy?: string; light?: boolean }) {
-  return <header className={`home-section-title${light ? " is-light" : ""}`}><p>{eyebrow}</p><h2>{title}</h2>{copy && <div>{copy}</div>}</header>;
+  return <header className={`home-section-title${light ? " is-light" : ""}`}><p className="home-section-eyebrow">{eyebrow}</p><h2>{title}</h2>{copy && <p className="home-section-copy">{copy}</p>}</header>;
 }
 
 type BenefitIconName = "microphone" | "clock" | "calendar" | "shield" | "coaching" | "headphones";

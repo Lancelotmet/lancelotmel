@@ -2,10 +2,17 @@
 
 import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
-import { createPortal } from "react-dom";
 import { BrandLockup, ButtonPrimary, ButtonSecondary, CrownMark, SectionTitle } from "./HomePage";
 
-type MethodIconName = "mind" | "origin" | "practice" | "transfer" | "language" | "academy" | "business" | "human";
+type MethodIconName =
+  | "mind"
+  | "origin"
+  | "practice"
+  | "transfer"
+  | "language"
+  | "academy"
+  | "business"
+  | "human";
 
 function MethodIcon({ name }: { name: MethodIconName }) {
   const paths: Record<MethodIconName, ReactNode> = {
@@ -21,125 +28,269 @@ function MethodIcon({ name }: { name: MethodIconName }) {
   return <span className="method-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">{paths[name]}</svg></span>;
 }
 
-const applications = [
-  { icon: "language" as const, title: "Idiomas", copy: "Descubre su lógica. Deja de traducir. Empieza a pensar.", href: "/sound-sprint", cta: "Conocer Sound Sprint" },
-  { icon: "academy" as const, title: "Academia", copy: "Conecta ideas. Comprende lo que antes memorizabas.", href: "/marketplace", cta: "Explorar recursos" },
-  { icon: "business" as const, title: "Mente empresarial", copy: "Lee patrones. Cambia decisiones. Crea estrategia.", href: "/marketplace", cta: "Desarrollar mentalidad" },
-  { icon: "human" as const, title: "Desarrollo personal", copy: "Cambia tu mirada. Amplía lo que crees posible.", href: "/citas", cta: "Vivir la experiencia" }
+const principles = [
+  { number: "01", title: "Doble Desbloqueo", copy: "Cada experiencia debe abrir una capacidad externa y una facultad interna: hacer algo nuevo y sostenerlo con criterio." },
+  { number: "02", title: "Metacognición activa", copy: "El aprendiz observa cómo aprende, ajusta su estrategia y deja de depender de la suerte o de la repetición ciega." },
+  { number: "03", title: "IA con centro humano", copy: "La tecnología amplía acceso, práctica y personalización; el criterio humano decide, interpreta y transforma." },
+  { number: "04", title: "Transferencia real", copy: "Comprender no termina en recordar. Termina cuando el conocimiento cambia una decisión, una acción o una forma de mirar." }
+];
+
+const transformationPath = [
+  { label: "Propósito", question: "¿Qué aprendizaje queremos producir?" },
+  { label: "Persona", question: "¿Qué necesita comprender, practicar o desbloquear?" },
+  { label: "Sistema", question: "¿Qué condiciones facilitan ese aprendizaje?" },
+  { label: "Evidencia", question: "¿Cómo sabremos que ocurrió transformación?" }
+];
+
+const audiences = [
+  { icon: "academy" as const, title: "Instituciones", copy: "Pasar de administrar cursos a formar aprendices autónomos, medibles y capaces de transferir conocimiento.", href: "/marketplace", cta: "Explorar recursos" },
+  { icon: "business" as const, title: "Empresas", copy: "Convertir capacitación en criterio, liderazgo que enseña y cultura de aprendizaje permanente.", href: "/marketplace", cta: "Ver soluciones" },
+  { icon: "language" as const, title: "Idiomas", copy: "Desbloquear voz, confianza y pertenencia comunicativa con práctica deliberada y feedback claro.", href: "/sound-sprint", cta: "Conocer Sound Sprint" },
+  { icon: "human" as const, title: "Aprendices", copy: "Recuperar una relación digna con aprender: menos bloqueo, más claridad, autonomía y progreso visible.", href: "/citas", cta: "Hablar con LANCELOT" }
+];
+
+const rituals = [
+  "Bienvenida al ecosistema",
+  "Círculos de aprendizaje",
+  "Laboratorios de innovación",
+  "Reflexión metacognitiva",
+  "Mentorías cruzadas",
+  "Espacios de investigación"
 ];
 
 const methodSlides = [
-  { src: "/brand/method-slider/sliderhome6.png", alt: "LANCELOT cambia la forma de aprender" },
-  { src: "/brand/method-slider/sliderhome3.png", alt: "Del bloqueo al desempeño en el colegio" },
-  { src: "/brand/method-slider/sliderhome2.png", alt: "Cuando entiende, todo cambia" },
-  { src: "/brand/method-slider/sliderhome4.png", alt: "En la universidad, la claridad marca la diferencia" },
-  { src: "/brand/method-slider/sliderhome1.png", alt: "Entender te hace avanzar en la empresa" },
-  { src: "/brand/method-slider/sliderhome5.png", alt: "Tu voz abre oportunidades en el mundo" }
+  { src: "/brand/method-slider/sliderhome6.png", alt: "LANCELOT transforma la manera de aprender" },
+  { src: "/brand/method-slider/sliderhome3.png", alt: "Un estudiante descubre claridad frente al bloqueo" },
+  { src: "/brand/method-slider/sliderhome2.png", alt: "El aprendizaje se vuelve una experiencia de revelación" },
+  { src: "/brand/method-slider/sliderhome4.png", alt: "La autonomía cambia la experiencia universitaria" },
+  { src: "/brand/method-slider/sliderhome1.png", alt: "El criterio se convierte en acción dentro de una empresa" },
+  { src: "/brand/method-slider/sliderhome5.png", alt: "La voz abre oportunidades globales" }
 ];
 
 function MethodSlider() {
   const [active, setActive] = useState(0);
-  const [expanded, setExpanded] = useState(false);
-  const [paused, setPaused] = useState(false);
-
-  const move = (direction: number) => setActive((current) => (current + direction + methodSlides.length) % methodSlides.length);
 
   useEffect(() => {
-    if (paused || expanded) return;
-    const timer = window.setInterval(() => move(1), 6500);
+    const timer = window.setInterval(() => setActive((current) => (current + 1) % methodSlides.length), 6200);
     return () => window.clearInterval(timer);
-  }, [paused, expanded]);
+  }, []);
 
-  useEffect(() => {
-    if (!expanded) return;
-    const previousOverflow = document.body.style.overflow;
-    const closeOnEscape = (event: KeyboardEvent) => event.key === "Escape" && setExpanded(false);
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", closeOnEscape);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", closeOnEscape);
-    };
-  }, [expanded]);
-
-  const slidePosition = (index: number) => {
-    let offset = (index - active + methodSlides.length) % methodSlides.length;
-    if (offset > methodSlides.length / 2) offset -= methodSlides.length;
-    if (offset === 0) return "active";
-    if (offset === -1) return "previous";
-    if (offset === 1) return "next";
-    if (offset === -2) return "far-previous";
-    if (offset === 2) return "far-next";
-    return "hidden";
-  };
-
-  return <><div className="method-slider reveal" aria-label="Historias de transformación LANCELOT" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-    <div className="method-slider-stage">
-      {methodSlides.map((slide, index) => {
-        const position = slidePosition(index);
-        const isActive = position === "active";
-        return <button
-          className={`method-slide method-slide-${position}`}
-          key={slide.src}
-          type="button"
-          aria-label={isActive ? `Ampliar: ${slide.alt}` : `Ver: ${slide.alt}`}
-          aria-current={isActive ? "true" : undefined}
-          tabIndex={position === "hidden" ? -1 : 0}
-          onClick={() => isActive ? setExpanded(true) : setActive(index)}
-        >
-          <img src={slide.src} alt={slide.alt} loading={index === 0 ? "eager" : "lazy"} />
-          {isActive && <span className="method-slide-zoom"><span aria-hidden="true">⌕</span> Ampliar</span>}
-        </button>;
-      })}
+  return <div className="lti-visual reveal" aria-label="Ecosistema visual LANCELOT">
+    <div className="lti-visual-main">
+      <img src={methodSlides[active].src} alt={methodSlides[active].alt} loading={active === 0 ? "eager" : "lazy"} />
     </div>
-    <div className="method-slider-controls">
-      <button type="button" className="method-slider-arrow" onClick={() => move(-1)} aria-label="Imagen anterior">‹</button>
-      <div className="method-slider-dots" aria-label="Seleccionar imagen">
-        {methodSlides.map((slide, index) => <button type="button" key={slide.src} className={index === active ? "active" : ""} onClick={() => setActive(index)} aria-label={`Ver imagen ${index + 1}`} aria-current={index === active ? "true" : undefined} />)}
-      </div>
-      <button type="button" className="method-slider-arrow" onClick={() => move(1)} aria-label="Imagen siguiente">›</button>
+    <div className="lti-visual-panel">
+      <span>Learning Transformation Infrastructure</span>
+      <strong>Conciencia · Autonomía · Criterio</strong>
+      <p>Una experiencia diseñada para que aprender no sea consumo de contenido, sino transformación verificable.</p>
     </div>
-    <p className="method-slider-hint"><span aria-hidden="true">＋</span> Toca la imagen para ampliarla</p>
-  </div>
-    {expanded && typeof document !== "undefined" && createPortal(<div className="method-lightbox" role="dialog" aria-modal="true" aria-label="Imagen ampliada" onClick={() => setExpanded(false)}>
-      <button type="button" className="method-lightbox-close" onClick={() => setExpanded(false)} aria-label="Cerrar imagen">×</button>
-      <button type="button" className="method-lightbox-nav method-lightbox-prev" onClick={(event) => { event.stopPropagation(); move(-1); }} aria-label="Imagen anterior">‹</button>
-      <img src={methodSlides[active].src} alt={methodSlides[active].alt} onClick={(event) => event.stopPropagation()} />
-      <button type="button" className="method-lightbox-nav method-lightbox-next" onClick={(event) => { event.stopPropagation(); move(1); }} aria-label="Imagen siguiente">›</button>
-      <span className="method-lightbox-counter">{active + 1} / {methodSlides.length}</span>
-    </div>, document.body)}
-  </>;
+    <div className="lti-visual-dots" aria-label="Seleccionar imagen">
+      {methodSlides.map((slide, index) => <button
+        aria-current={index === active ? "true" : undefined}
+        aria-label={`Ver imagen ${index + 1}: ${slide.alt}`}
+        className={index === active ? "active" : ""}
+        key={slide.src}
+        onClick={() => setActive(index)}
+        type="button"
+      />)}
+    </div>
+  </div>;
+}
+
+function LearningSystemDiagram() {
+  return <div className="learning-system reveal" aria-label="Sistema de transformación del aprendizaje">
+    <div className="system-core">
+      <CrownMark compact />
+      <strong>LANCELOT</strong>
+      <span>Desde el ser para el saber</span>
+    </div>
+    {["Filosofía", "Ciencias del aprendizaje", "IA educativa", "Experiencias adaptativas", "Analítica", "Cultura"].map((item, index) => <span className={`system-node node-${index + 1}`} key={item}>{item}</span>)}
+  </div>;
 }
 
 export function MethodologyHomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
+
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("visible")), { threshold: .12 });
     document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
     return () => observer.disconnect();
   }, []);
+
   const close = () => setMenuOpen(false);
 
-  return <main className="lancelot-home methodology-home">
-    <nav className="home-nav" aria-label="Navegación principal"><div className="home-shell nav-inner"><Link className="home-brand" href="#inicio" onClick={close}><BrandLockup compact /></Link><button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-label="Abrir menú"><i /><i /><i /></button><div className={`home-links${menuOpen ? " open" : ""}`}><Link href="#metodologia" onClick={close}>Metodología</Link><Link href="#proceso" onClick={close}>Cómo funciona</Link><Link href="#aplicaciones" onClick={close}>Aplicaciones</Link><Link href="/marketplace" onClick={close}>Experiencias</Link><ButtonPrimary href="#descubrir">Descubre LANCELOT</ButtonPrimary></div></div></nav>
+  return <main className="lancelot-home methodology-home lti-home">
+    <nav className="home-nav lti-nav" aria-label="Navegación principal">
+      <div className="home-shell nav-inner">
+        <Link className="home-brand" href="#inicio" onClick={close}><BrandLockup compact /></Link>
+        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-label="Abrir menú"><i /><i /><i /></button>
+        <div className={`home-links${menuOpen ? " open" : ""}`}>
+          <Link href="#categoria" onClick={close}>Categoría</Link>
+          <Link href="#sistema" onClick={close}>Sistema</Link>
+          <Link href="#cultura" onClick={close}>Cultura</Link>
+          <Link href="/marketplace" onClick={close}>Experiencias</Link>
+          <ButtonPrimary href="#contacto">Empezar</ButtonPrimary>
+        </div>
+      </div>
+    </nav>
 
-    <section className="method-hero" id="inicio"><div className="home-shell"><div className="official-logo reveal"><img src="/brand/lancelot-logo-official.png" alt="LANCELOT — Desde el ser para el saber" /></div><div className="method-hero-grid"><div className="method-hero-copy reveal"><h1>Una metodología innovadora que hace entendible <em>lo que parecía imposible.</em></h1><div className="home-actions"><ButtonPrimary href="#metodologia">Descubre la metodología</ButtonPrimary><ButtonSecondary href="#aplicaciones">Dónde se aplica</ButtonSecondary></div></div><MethodSlider /></div></div></section>
+    <section className="lti-hero" id="inicio">
+      <div className="home-shell lti-hero-grid">
+        <div className="lti-hero-copy reveal">
+          <div className="official-logo"><img src="/brand/lancelot-logo-official.png" alt="LANCELOT - Desde el ser para el saber" /></div>
+          <p className="home-kicker">Infraestructura de Transformación del Aprendizaje</p>
+          <h1>LANCELOT transforma la manera de aprender en la era de la IA.</h1>
+          <p className="hero-lead">Aprender no es llenarse de información. Es descubrir capacidades, construir autonomía y transformar la relación con el conocimiento.</p>
+          <div className="home-actions">
+            <ButtonPrimary href="#categoria">Conocer la categoría</ButtonPrimary>
+            <ButtonSecondary href="/marketplace">Explorar experiencias</ButtonSecondary>
+          </div>
+          <dl className="lti-proof-row" aria-label="Principios centrales">
+            <div><dt>01</dt><dd>Metacognición activa</dd></div>
+            <div><dt>02</dt><dd>IA educativa humanista</dd></div>
+            <div><dt>03</dt><dd>Doble Desbloqueo</dd></div>
+          </dl>
+        </div>
+        <MethodSlider />
+      </div>
+    </section>
 
-    <section className="method-manifesto"><div className="home-shell reveal"><CrownMark /><p>Desde el ser para el saber</p><blockquote>Los genios no saben más, aprenden distinto.</blockquote></div></section>
+    <section className="lti-thesis" id="categoria">
+      <div className="home-shell lti-thesis-grid">
+        <div className="reveal">
+          <p className="home-kicker">La nueva categoría</p>
+          <h2>No es otra plataforma de cursos. Es una infraestructura para transformar la relación humana con aprender.</h2>
+        </div>
+        <div className="lti-thesis-copy reveal">
+          <p>Durante años la educación intentó resolver el aprendizaje entregando más contenido, más cursos y más tecnología. En la era de la IA, el contenido ya es abundante. Lo escaso es criterio, autonomía, profundidad y transferencia.</p>
+          <p>LANCELOT integra filosofía educativa, ciencias del aprendizaje, metacognición activa, inteligencia aumentada y experiencias personalizadas para convertir conocimiento en capacidad, conciencia y desarrollo humano.</p>
+        </div>
+      </div>
+    </section>
 
-    <section className="methodology-section" id="metodologia"><div className="home-shell"><SectionTitle eyebrow="La lógica revelada" title="CONOCE LANCELOT" copy="El conocimiento no completa la identidad del aprendiz; la revela, la organiza, la ejercita y la pone al servicio de un bien posible" /><div className="method-pillars"><article className="reveal"><MethodIcon name="mind" /><span>01</span><h3>Mentalidad</h3><p>Abre la mente a nuevas posibilidades.</p></article><article className="reveal"><MethodIcon name="origin" /><span>02</span><h3>La lógica</h3><p>Revela el origen y el patrón de cada idea.</p></article><article className="reveal"><MethodIcon name="practice" /><span>03</span><h3>Momento eureka</h3><p>Conecta las piezas. Todo cobra sentido.</p></article><article className="reveal"><MethodIcon name="transfer" /><span>04</span><h3>Nueva perspectiva</h3><p>Piensa, decide y crea de otra manera.</p></article></div></div></section>
+    <section className="methodology-section lti-principles">
+      <div className="home-shell">
+        <SectionTitle eyebrow="La promesa pedagógica" title="Todo aprendizaje valioso debe producir Doble Desbloqueo" copy="Una capacidad externa: poder hacer algo nuevo. Una facultad interna: poder sostenerlo con claridad, carácter y criterio." />
+        <div className="lti-principle-grid">
+          {principles.map((principle) => <article className="reveal" key={principle.title}>
+            <span>{principle.number}</span>
+            <h3>{principle.title}</h3>
+            <p>{principle.copy}</p>
+          </article>)}
+        </div>
+      </div>
+    </section>
 
-    <section className="genius-section"><div className="home-shell genius-grid"><div className="genius-statement reveal"><p className="home-kicker">El cambio de perspectiva</p><h2>Una idea puede reorganizar tu mundo.</h2><blockquote>El eureka ocurre cuando lo complejo revela su patrón.</blockquote></div><div className="genius-contrast reveal"><article><span>Memorizar</span><strong>Repetir</strong><p>Acumulas datos. Conservas la misma mirada.</p></article><i>→</i><article><span>Comprender</span><strong>Revelar</strong><p>Encuentras la lógica. Cambias la perspectiva.</p></article></div></div></section>
+    <section className="lti-system-section" id="sistema">
+      <div className="home-shell lti-system-grid">
+        <LearningSystemDiagram />
+        <div className="reveal">
+          <SectionTitle light eyebrow="Sistema operativo del aprendizaje" title="Filosofía, tecnología y experiencia trabajando como una sola arquitectura" copy="La marca no se define por el formato de entrega. Se define por la transformación que produce." />
+          <div className="lti-system-list">
+            <p><strong>Revela.</strong> El aprendiz no llega vacío: llega con potencia que necesita forma, lenguaje y dirección.</p>
+            <p><strong>Organiza.</strong> Cada ruta vuelve visible el proceso mental para que la persona entienda cómo aprende.</p>
+            <p><strong>Ejercita.</strong> La disciplina se convierte en práctica deliberada, evidencia y progreso visible.</p>
+            <p><strong>Transfiere.</strong> El conocimiento se prueba cuando cambia decisiones, voz, criterio o acción.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <section className="method-process-section" id="proceso"><div className="home-shell"><SectionTitle eyebrow="La ruta hacia el click" title="De no entender a ver con claridad" copy="Cuatro movimientos. Una nueva forma de mirar." /><div className="method-process"><article className="reveal"><b>01</b><h3>Descubre</h3><p>Encuentra la pregunta que abre el tema.</p></article><article className="reveal"><b>02</b><h3>Entiende</h3><p>Revela la lógica oculta.</p></article><article className="reveal"><b>03</b><h3>Interioriza</h3><p>Conecta la idea contigo.</p></article><article className="reveal"><b>04</b><h3>Expresa</h3><p>Piensa y actúa distinto.</p></article></div></div></section>
+    <section className="lti-language-section">
+      <div className="home-shell lti-language-grid">
+        <div className="reveal">
+          <p className="home-kicker">Arquitectura del lenguaje</p>
+          <h2>Las palabras también educan.</h2>
+          <p>LANCELOT habla con claridad, profundidad y respeto. No infantiliza, no grita, no promete magia. Su voz existe para que quien escucha comprenda mejor el mundo y se comprenda mejor a sí mismo.</p>
+        </div>
+        <div className="lti-word-board reveal">
+          {["Comprender", "Revelar", "Observar", "Ajustar", "Practicar", "Conectar", "Transformar", "Autonomía", "Criterio", "Evidencia", "Propósito", "Transferencia"].map((word) => <span key={word}>{word}</span>)}
+        </div>
+      </div>
+    </section>
 
-    <section className="applications-section" id="aplicaciones"><div className="home-shell"><SectionTitle light eyebrow="Una lógica, múltiples caminos" title="El click puede ocurrir en cualquier tema" copy="Cambia el escenario. La revelación es la misma." /><div className="application-grid">{applications.map((application) => <article className="application-card reveal" key={application.title}><MethodIcon name={application.icon} /><span>Aplicación</span><h3>{application.title}</h3><p>{application.copy}</p><Link href={application.href}>{application.cta} <b>→</b></Link></article>)}</div></div></section>
+    <section className="method-process-section lti-process">
+      <div className="home-shell">
+        <SectionTitle eyebrow="Learning Thinking" title="Toda decisión comienza con una pregunta de aprendizaje" copy="La cultura LANCELOT convierte experiencia en aprendizaje, aprendizaje en criterio y criterio en valor para otros." />
+        <div className="lti-path">
+          {transformationPath.map((step, index) => <article className="reveal" key={step.label}>
+            <b>{String(index + 1).padStart(2, "0")}</b>
+            <h3>{step.label}</h3>
+            <p>{step.question}</p>
+          </article>)}
+        </div>
+      </div>
+    </section>
 
-    <section className="transformation-section"><div className="home-shell transformation-frame reveal"><CrownMark /><SectionTitle eyebrow="Después del click" title="Ya no vuelves a ver igual" /><div className="transformation-list"><span>Claridad</span><span>Perspectiva</span><span>Criterio</span><span>Conexión</span><span>Autonomía</span></div><blockquote>Aprender de verdad es cambiar la forma de mirar.</blockquote></div></section>
+    <section className="applications-section lti-audiences">
+      <div className="home-shell">
+        <SectionTitle light eyebrow="Una infraestructura, múltiples caminos" title="LANCELOT acompaña personas e instituciones que necesitan aprender mejor" copy="Cambia el contexto. La promesa permanece: claridad, autonomía, criterio y transformación." />
+        <div className="application-grid">
+          {audiences.map((audience) => <article className="application-card reveal" key={audience.title}>
+            <MethodIcon name={audience.icon} />
+            <span>Aplicación</span>
+            <h3>{audience.title}</h3>
+            <p>{audience.copy}</p>
+            <Link href={audience.href}>{audience.cta} <b>→</b></Link>
+          </article>)}
+        </div>
+      </div>
+    </section>
 
-    <section className="method-final" id="descubrir"><div className="home-shell reveal"><BrandLockup /><p>Tu próximo eureka empieza con una pregunta</p><h2>Descubre la lógica que puede cambiar tu perspectiva.</h2><div className="home-actions"><ButtonPrimary href="/marketplace">Explorar experiencias</ButtonPrimary><ButtonSecondary href="/citas">Hablar con LANCELOT</ButtonSecondary></div></div></section>
+    <section className="lti-culture-section" id="cultura">
+      <div className="home-shell lti-culture-grid">
+        <div className="lti-culture-copy reveal">
+          <p className="home-kicker">Cultura del aprendizaje</p>
+          <h2>Una organización enseña incluso cuando simplemente está decidiendo.</h2>
+          <p>LANCELOT protege una cultura humanista, rigurosa y permanente: liderazgo que enseña, investigación, práctica, retroalimentación, rituales y decisiones guiadas por evidencia.</p>
+          <blockquote>Mientras LANCELOT crezca, nunca dejará de preguntarse si aquello que construye ayuda a las personas a aprender mejor, pensar mejor, actuar mejor y convertirse en una versión más consciente de sí mismas.</blockquote>
+        </div>
+        <div className="lti-rituals reveal">
+          {rituals.map((ritual, index) => <span key={ritual}><b>{String(index + 1).padStart(2, "0")}</b>{ritual}</span>)}
+        </div>
+      </div>
+    </section>
 
-    <footer className="home-footer"><div className="home-shell"><BrandLockup /><nav aria-label="Navegación del footer"><Link href="#metodologia">Metodología</Link><Link href="#proceso">Cómo funciona</Link><Link href="#aplicaciones">Aplicaciones</Link><Link href="/sound-sprint">Sound Sprint</Link><Link href="/marketplace">Marketplace</Link></nav><p>© 2026 LANCELOT. Todos los derechos reservados.</p></div></footer>
-    <div className="mobile-sticky"><ButtonPrimary href="#descubrir">Descubre LANCELOT</ButtonPrimary></div>
+    <section className="transformation-section lti-manifesto">
+      <div className="home-shell transformation-frame reveal">
+        <CrownMark />
+        <SectionTitle eyebrow="Manifiesto" title="El conocimiento no completa al ser humano. Lo revela." copy="LANCELOT no existe para enseñar más contenidos; existe para que más personas vuelvan a creer, con evidencia, en su capacidad de aprender." />
+        <div className="transformation-list">
+          <span>Claridad</span>
+          <span>Autonomía</span>
+          <span>Criterio</span>
+          <span>Práctica</span>
+          <span>Propósito</span>
+        </div>
+        <blockquote>Desde el ser para el saber.</blockquote>
+      </div>
+    </section>
+
+    <section className="method-final lti-final" id="contacto">
+      <div className="home-shell reveal">
+        <BrandLockup />
+        <p>El futuro necesita personas capaces de aprender durante toda la vida</p>
+        <h2>Construyamos una experiencia de aprendizaje con claridad, evidencia y transformación.</h2>
+        <div className="home-actions">
+          <ButtonPrimary href="/citas">Hablar con LANCELOT</ButtonPrimary>
+          <ButtonSecondary href="/marketplace">Explorar marketplace</ButtonSecondary>
+        </div>
+      </div>
+    </section>
+
+    <footer className="home-footer">
+      <div className="home-shell">
+        <BrandLockup />
+        <nav aria-label="Navegación del footer">
+          <Link href="#categoria">Categoría</Link>
+          <Link href="#sistema">Sistema</Link>
+          <Link href="#cultura">Cultura</Link>
+          <Link href="/sound-sprint">Sound Sprint</Link>
+          <Link href="/marketplace">Marketplace</Link>
+        </nav>
+        <p>© 2026 LANCELOT. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+    <div className="mobile-sticky"><ButtonPrimary href="#contacto">Empezar</ButtonPrimary></div>
   </main>;
 }

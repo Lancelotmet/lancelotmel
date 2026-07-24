@@ -3,8 +3,8 @@ import { SiteChrome } from "@/components/SiteChrome";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "LANCELOT | Metodología para aprender distinto",
-  description: "Una metodología de aprendizaje profundo para comprender, pensar y aplicar conocimiento en idiomas, academia, empresa y vida."
+  title: "LANCELOT | Infraestructura de Transformación del Aprendizaje",
+  description: "LANCELOT integra IA educativa, metacognición y ciencias del aprendizaje para convertir conocimiento en autonomía, criterio y transformación humana."
 };
 
 export default function RootLayout({

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useCallback, useEffect, useState } from "react";
 import { BrandLockup, ButtonPrimary, ButtonSecondary, CrownMark, SectionTitle } from "./HomePage";
 
 type MethodIconName =
@@ -69,32 +69,72 @@ const methodSlides = [
 
 function MethodSlider() {
   const [active, setActive] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(false);
 
-  useEffect(() => {
-    const timer = window.setInterval(() => setActive((current) => (current + 1) % methodSlides.length), 6200);
-    return () => window.clearInterval(timer);
+  const goTo = useCallback((index: number) => {
+    setActive((index + methodSlides.length) % methodSlides.length);
   }, []);
 
-  return <div className="lti-visual reveal" aria-label="Ecosistema visual LANCELOT">
-    <div className="lti-visual-main">
-      <img src={methodSlides[active].src} alt={methodSlides[active].alt} loading={active === 0 ? "eager" : "lazy"} />
+  useEffect(() => {
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setReduceMotion(preference.matches);
+    updatePreference();
+    preference.addEventListener("change", updatePreference);
+    return () => preference.removeEventListener("change", updatePreference);
+  }, []);
+
+  useEffect(() => {
+    if (isPaused || reduceMotion) return;
+    const timer = window.setInterval(() => goTo(active + 1), 7000);
+    return () => window.clearInterval(timer);
+  }, [active, goTo, isPaused, reduceMotion]);
+
+  return <section
+    className="lti-visual reveal"
+    aria-label="Ecosistema visual LANCELOT"
+    aria-roledescription="carrusel"
+    onMouseEnter={() => setIsPaused(true)}
+    onMouseLeave={() => setIsPaused(false)}
+    onFocus={() => setIsPaused(true)}
+    onBlur={(event) => {
+      if (!event.currentTarget.contains(event.relatedTarget)) setIsPaused(false);
+    }}
+  >
+    <div className="lti-visual-main" aria-live="polite">
+      {methodSlides.map((slide, index) => <img
+        alt={index === active ? slide.alt : ""}
+        aria-hidden={index !== active}
+        className={index === active ? "active" : ""}
+        key={slide.src}
+        loading={index === 0 ? "eager" : "lazy"}
+        src={slide.src}
+      />)}
     </div>
     <div className="lti-visual-panel">
       <span>Learning Transformation Infrastructure</span>
       <strong>Conciencia · Autonomía · Criterio</strong>
       <p>Una experiencia diseñada para que aprender no sea consumo de contenido, sino transformación verificable.</p>
     </div>
-    <div className="lti-visual-dots" aria-label="Seleccionar imagen">
+    <div className="lti-visual-controls">
+      <button aria-label="Ver imagen anterior" className="lti-visual-arrow" onClick={() => goTo(active - 1)} type="button">
+        <span aria-hidden="true">←</span>
+      </button>
+      <div className="lti-visual-dots" aria-label="Seleccionar imagen">
       {methodSlides.map((slide, index) => <button
         aria-current={index === active ? "true" : undefined}
         aria-label={`Ver imagen ${index + 1}: ${slide.alt}`}
         className={index === active ? "active" : ""}
         key={slide.src}
-        onClick={() => setActive(index)}
+        onClick={() => goTo(index)}
         type="button"
       />)}
+      </div>
+      <button aria-label="Ver imagen siguiente" className="lti-visual-arrow" onClick={() => goTo(active + 1)} type="button">
+        <span aria-hidden="true">→</span>
+      </button>
     </div>
-  </div>;
+  </section>;
 }
 
 function LearningSystemDiagram() {

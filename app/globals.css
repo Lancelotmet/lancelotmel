@@ -1941,8 +1941,8 @@ h1 {
 .menu-toggle i { background: var(--navy); display: block; height: 2px; margin: 5px; width: 26px; }
 .home-button { align-items: center; border-radius: 999px; display: inline-flex; font-family: Cinzel, serif; font-size: .72rem; font-weight: 600; gap: 26px; justify-content: center; letter-spacing: .09em; min-height: 52px; padding: 0 24px; text-transform: uppercase; transition: .25s ease; }
 .home-button span { font-size: 1.2rem; }
-.home-button-primary { background: linear-gradient(145deg, #102a49, #06111f); border: 1px solid var(--gold); box-shadow: 0 10px 28px rgba(7,20,38,.2); color: var(--gold-light); }
-.home-button-primary:hover { box-shadow: 0 10px 34px rgba(216,166,64,.35), inset 0 0 22px rgba(216,166,64,.1); transform: translateY(-2px); }
+.home-button-primary { background: linear-gradient(145deg, #102a49, #06111f); border: 1px solid var(--gold); box-shadow: 0 10px 28px rgba(7,20,38,.2); color: #fff; }
+.home-button-primary:hover { box-shadow: 0 10px 34px rgba(216,166,64,.35), inset 0 0 22px rgba(216,166,64,.1); color: #fff; transform: translateY(-2px); }
 .home-button-secondary { background: rgba(255,255,255,.76); border: 1px solid var(--gold); color: var(--navy); }
 .home-button-secondary:hover { background: var(--ivory); transform: translateY(-2px); }
 .home-button-gold { background: linear-gradient(100deg, var(--gold-light), var(--gold)); border: 1px solid #ffe098; color: var(--navy); width: 100%; }

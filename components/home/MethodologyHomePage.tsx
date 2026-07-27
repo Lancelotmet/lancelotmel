@@ -30,9 +30,10 @@ function MethodIcon({ name }: { name: MethodIconName }) {
 
 const principles = [
   { number: "01", title: "Doble Desbloqueo", copy: "Cada experiencia debe abrir una capacidad externa y una facultad interna: hacer algo nuevo y sostenerlo con criterio." },
-  { number: "02", title: "Metacognición activa", copy: "El aprendiz observa cómo aprende, ajusta su estrategia y deja de depender de la suerte o de la repetición ciega." },
+  { number: "02", title: "Metacognición activa", copy: "El aprendiz observa cómo aprende, ajusta su estrategia y deja de depender del azar o de la repetición ciega." },
   { number: "03", title: "IA con centro humano", copy: "La tecnología amplía acceso, práctica y personalización; el criterio humano decide, interpreta y transforma." },
-  { number: "04", title: "Transferencia real", copy: "Comprender no termina en recordar. Termina cuando el conocimiento cambia una decisión, una acción o una forma de mirar." }
+  { number: "04", title: "Transferencia real", copy: "Comprender no termina en recordar. Termina cuando el conocimiento cambia una decisión, una acción o una forma de mirar." },
+  { number: "05", title: "La disciplina como recompensa", copy: "La disciplina no es el castigo por querer aprender; es la primera prueba de que ya estamos cambiando. La práctica con sentido convierte el esfuerzo en progreso visible y la constancia en respeto por el propio potencial." }
 ];
 
 const transformationPath = [
@@ -178,7 +179,7 @@ export function MethodologyHomePage() {
       <div className="home-shell lti-hero-grid">
         <div className="lti-hero-copy reveal">
           <div className="official-logo"><img src="/brand/lancelot-logo-official.png" alt="LANCELOT - Desde el ser para el saber" /></div>
-          <p className="home-kicker">Infraestructura de Transformación del Aprendizaje</p>
+          <p className="home-kicker">Centro de Entrenamiento del Aprendizaje</p>
           <h1>LANCELOT transforma la manera de aprender en la era de la IA.</h1>
           <p className="hero-lead">Aprender no es llenarse de información. Es descubrir capacidades, construir autonomía y transformar la relación con el conocimiento.</p>
           <div className="home-actions">
@@ -198,8 +199,9 @@ export function MethodologyHomePage() {
     <section className="lti-thesis" id="categoria">
       <div className="home-shell lti-thesis-grid">
         <div className="reveal">
-          <p className="home-kicker">La nueva categoría</p>
-          <h2>No es otra plataforma de cursos. Es una infraestructura para transformar la relación humana con aprender.</h2>
+          <p className="home-kicker">Desde el Ser para el Saber</p>
+          <h2>No es otra plataforma de cursos.</h2>
+          <h3>Es una infraestructura para transformar la relación humana con aprender.</h3>
         </div>
         <div className="lti-thesis-copy reveal">
           <p>Durante años la educación intentó resolver el aprendizaje entregando más contenido, más cursos y más tecnología. En la era de la IA, el contenido ya es abundante. Lo escaso es criterio, autonomía, profundidad y transferencia.</p>
@@ -210,7 +212,7 @@ export function MethodologyHomePage() {
 
     <section className="methodology-section lti-principles">
       <div className="home-shell">
-        <SectionTitle eyebrow="La promesa pedagógica" title="Todo aprendizaje valioso debe producir Doble Desbloqueo" copy="Una capacidad externa: poder hacer algo nuevo. Una facultad interna: poder sostenerlo con claridad, carácter y criterio." />
+        <SectionTitle eyebrow="La promesa" title="Todo aprendizaje valioso debe revelar al Ser" copy="Una capacidad externa: poder hacer algo nuevo. Una facultad interna: poder sostenerlo con claridad, carácter y criterio." />
         <div className="lti-principle-grid">
           {principles.map((principle) => <article className="reveal" key={principle.title}>
             <span>{principle.number}</span>

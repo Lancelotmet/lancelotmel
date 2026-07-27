@@ -2623,6 +2623,15 @@ h1 {
 
 .lti-thesis h2 { color: #fff8e9; }
 
+.lti-thesis h3 {
+  color: var(--lti-gold);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.45rem, 2.25vw, 2.2rem);
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 22px 0 0;
+}
+
 .lti-thesis-copy {
   border-left: 1px solid rgba(198, 158, 94, .48);
   display: grid;
@@ -2650,7 +2659,7 @@ h1 {
 .lti-principle-grid {
   display: grid;
   gap: 0;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   margin-top: 72px;
 }
 

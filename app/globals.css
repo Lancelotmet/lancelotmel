@@ -2388,6 +2388,12 @@ h1 {
   color: #3d403d;
 }
 
+.lti-nav .home-links .home-button-primary,
+.lti-nav .home-links .home-button-primary:hover,
+.lti-nav .home-links .home-button-primary:focus-visible {
+  color: #fff;
+}
+
 .lti-hero {
   background:
     linear-gradient(90deg, rgba(144, 102, 41, .08) 1px, transparent 1px),

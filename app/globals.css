@@ -2468,7 +2468,7 @@ h1 {
 }
 
 .lti-visual-main {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 9;
   background: var(--lti-ink);
   border: 1px solid rgba(198, 158, 94, .72);
   border-radius: 2px;

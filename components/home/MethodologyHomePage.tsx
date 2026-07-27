@@ -59,6 +59,16 @@ const rituals = [
   "Espacios de investigación"
 ];
 
+const reasonsToBelieve = [
+  { number: "01", title: "Doble Desbloqueo", copy: "Cada experiencia desarrolla una capacidad externa y una facultad interna." },
+  { number: "02", title: "Metacognición transversal", copy: "Observar cómo se aprende es una capa presente en toda la experiencia." },
+  { number: "03", title: "IA que aumenta criterio", copy: "La inteligencia artificial acompaña, personaliza y amplía el pensamiento humano." },
+  { number: "04", title: "Rutas que responden", copy: "La práctica se adapta al estado cognitivo, emocional y práctico del aprendiz." },
+  { number: "05", title: "Métricas que transforman", copy: "El progreso se mide en transferencia, confianza, autorregulación y dominio." },
+  { number: "06", title: "Identidad académica", copy: "Docentes e instituciones aplican la filosofía sin perder lo que los hace únicos." },
+  { number: "07", title: "Filosofía observable", copy: "La plataforma convierte principios en conductas, práctica y evidencia visible." }
+];
+
 const methodSlides = [
   { src: "/brand/method-slider/sliderhome6.png", alt: "LANCELOT transforma la manera de aprender" },
   { src: "/brand/method-slider/sliderhome3.png", alt: "Un estudiante descubre claridad frente al bloqueo" },
@@ -139,14 +149,27 @@ function MethodSlider() {
 }
 
 function LearningSystemDiagram() {
-  return <div className="learning-system reveal" aria-label="Sistema de transformación del aprendizaje">
-    <div className="system-core">
-      <CrownMark compact />
-      <strong>LANCELOT</strong>
-      <span>Desde el ser para el saber</span>
+  return <figure className="learning-system reveal" aria-label="Razones para creer en el sistema de aprendizaje Lancelot">
+    <header className="system-evidence-header">
+      <span>Reasons to Believe</span>
+      <p>La posición de Lancelot se sostiene cuando su filosofía se vuelve evidencia.</p>
+    </header>
+    <div className="system-evidence-layout">
+      <div className="system-core">
+        <CrownMark compact />
+        <strong>Lancelot</strong>
+        <span>Del conocimiento a la transformación</span>
+      </div>
+      <div className="system-evidence-grid">
+        {reasonsToBelieve.map((reason) => <article className="system-proof" key={reason.number}>
+          <b>{reason.number}</b>
+          <strong>{reason.title}</strong>
+          <p>{reason.copy}</p>
+        </article>)}
+      </div>
     </div>
-    {["Filosofía", "Ciencias del aprendizaje", "IA educativa", "Experiencias adaptativas", "Analítica", "Cultura"].map((item, index) => <span className={`system-node node-${index + 1}`} key={item}>{item}</span>)}
-  </div>;
+    <figcaption>Una filosofía solo tiene valor cuando cambia la forma de aprender, enseñar y acompañar.</figcaption>
+  </figure>;
 }
 
 export function MethodologyHomePage() {
@@ -227,7 +250,7 @@ export function MethodologyHomePage() {
       <div className="home-shell lti-system-grid">
         <LearningSystemDiagram />
         <div className="reveal">
-          <SectionTitle light eyebrow="Sistema operativo del aprendizaje" title="Filosofía, tecnología y experiencia trabajando como una sola arquitectura" copy="La marca no se define por el formato de entrega. Se define por la transformación que produce." />
+          <SectionTitle light eyebrow="Centro de Entrenamiento del Aprendizaje" title="Conocimiento que se convierte en autonomía, criterio, capacidad y transformación humana" copy="Lancelot es un Centro de Entrenamiento del Aprendizaje para la era de la Inteligencia Artificial: un ecosistema que integra filosofía educativa, ciencias del aprendizaje, metacognición activa, inteligencia aumentada y experiencias personalizadas para ayudar a personas e instituciones a convertir el conocimiento en autonomía, criterio, capacidad y transformación humana." />
           <div className="lti-system-list">
             <p><strong>Revela.</strong> El aprendiz no llega vacío: llega con potencia que necesita forma, lenguaje y dirección.</p>
             <p><strong>Organiza.</strong> Cada ruta vuelve visible el proceso mental para que la persona entienda cómo aprende.</p>

@@ -50,15 +50,6 @@ const audiences = [
   { icon: "human" as const, title: "Aprendices", copy: "Recuperar una relación digna con aprender: menos bloqueo, más claridad, autonomía y progreso visible.", href: "/citas", cta: "Hablar con LANCELOT" }
 ];
 
-const rituals = [
-  "Bienvenida al ecosistema",
-  "Círculos de aprendizaje",
-  "Laboratorios de innovación",
-  "Reflexión metacognitiva",
-  "Mentorías cruzadas",
-  "Espacios de investigación"
-];
-
 const reasonsToBelieve = [
   { number: "01", title: "Doble Desbloqueo", copy: "Cada experiencia desarrolla una capacidad externa y una facultad interna." },
   { number: "02", title: "Metacognición transversal", copy: "Observar cómo se aprende es una capa presente en toda la experiencia." },
@@ -302,17 +293,45 @@ export function MethodologyHomePage() {
       </div>
     </section>
 
-    <section className="lti-culture-section" id="cultura">
-      <div className="home-shell lti-culture-grid">
-        <div className="lti-culture-copy reveal">
-          <p className="home-kicker">Cultura del aprendizaje</p>
-          <h2>Una organización enseña incluso cuando simplemente está decidiendo.</h2>
-          <p>LANCELOT protege una cultura humanista, rigurosa y permanente: liderazgo que enseña, investigación, práctica, retroalimentación, rituales y decisiones guiadas por evidencia.</p>
-          <blockquote>Mientras LANCELOT crezca, nunca dejará de preguntarse si aquello que construye ayuda a las personas a aprender mejor, pensar mejor, actuar mejor y convertirse en una versión más consciente de sí mismas.</blockquote>
+    <section className="lti-culture-section lti-enterprise" id="cultura">
+      <div className="home-shell">
+        <header className="enterprise-intro reveal">
+          <p className="home-kicker">Entrenamiento Lancelot para empresas</p>
+          <h2>Equipos que aprenden más rápido, comprenden mejor y resuelven más.</h2>
+          <p>Programa grupal de 6 sesiones para desarrollar habilidades cognitivas y metacognición aplicada en tu equipo.</p>
+        </header>
+        <div className="enterprise-value-grid">
+          <article className="enterprise-value reveal">
+            <span>01</span>
+            <h3>Lo que hacemos</h3>
+            <ul>
+              <li>Detectamos bloqueos de aprendizaje.</li>
+              <li>Reconfiguramos la forma de comprender.</li>
+              <li>Fortalecemos pensamiento claro y aprendizaje activo.</li>
+            </ul>
+          </article>
+          <article className="enterprise-value reveal">
+            <span>02</span>
+            <h3>Programa grupal</h3>
+            <ul>
+              <li>6 sesiones guiadas.</li>
+              <li>Metacognición avanzada.</li>
+              <li>Mindsets de alto desempeño.</li>
+              <li>Aplicación inmediata al trabajo.</li>
+            </ul>
+          </article>
+          <article className="enterprise-value reveal">
+            <span>03</span>
+            <h3>Lo que logras</h3>
+            <ul>
+              <li>Equipos que comprenden más rápido.</li>
+              <li>Mejor identificación de problemas y soluciones.</li>
+              <li>Mayor búsqueda de nuevos conocimientos.</li>
+              <li>Más adaptación y aprendizaje continuo.</li>
+            </ul>
+          </article>
         </div>
-        <div className="lti-rituals reveal">
-          {rituals.map((ritual, index) => <span key={ritual}><b>{String(index + 1).padStart(2, "0")}</b>{ritual}</span>)}
-        </div>
+        <p className="enterprise-outcome reveal">Equipos que aprenden mejor encuentran más y mejores soluciones.</p>
       </div>
     </section>
 

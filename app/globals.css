@@ -3095,7 +3095,7 @@ h1 {
   width: 29px;
 }
 
-.lti-audiences .application-card-content > span:not(.method-icon) {
+.lti-audiences .application-card-copy > span {
   color: #d9a948;
   display: block;
   font-size: .63rem;
@@ -3109,7 +3109,7 @@ h1 {
   color: #f9f0dd;
   font-size: clamp(1.6rem, 2.6vw, 2.2rem);
   line-height: 1;
-  margin: 10px 0 7px;
+  margin: 0 0 7px;
 }
 
 .lti-audiences .application-card p {

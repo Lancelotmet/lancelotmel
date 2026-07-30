@@ -302,9 +302,11 @@ export function MethodologyHomePage() {
             </div>
             <div className="application-card-content">
             <MethodIcon name={audience.icon} />
+            <div className="application-card-copy">
             <span>Aplicación</span>
             <h3>{audience.title}</h3>
             <p>{audience.copy}</p>
+            </div>
             <Link href={audience.href}>{audience.cta} <b>→</b></Link>
             </div>
           </article>)}

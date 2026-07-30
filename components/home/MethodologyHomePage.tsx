@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ReactNode, useCallback, useEffect, useState } from "react";
+import { FormEvent, ReactNode, useCallback, useEffect, useState } from "react";
 import { BrandLockup, ButtonPrimary, ButtonSecondary, CrownMark, SectionTitle } from "./HomePage";
 
 type MethodIconName =
@@ -36,16 +36,9 @@ const principles = [
   { number: "05", title: "La disciplina como recompensa", copy: "La disciplina no es el castigo por querer aprender; es la primera prueba de que ya estamos cambiando. La práctica con sentido convierte el esfuerzo en progreso visible y la constancia en respeto por el propio potencial." }
 ];
 
-const transformationPath = [
-  { label: "Propósito", question: "¿Qué aprendizaje queremos producir?" },
-  { label: "Persona", question: "¿Qué necesita comprender, practicar o desbloquear?" },
-  { label: "Sistema", question: "¿Qué condiciones facilitan ese aprendizaje?" },
-  { label: "Evidencia", question: "¿Cómo sabremos que ocurrió transformación?" }
-];
-
 const audiences = [
   { icon: "academy" as const, title: "Instituciones", copy: "Pasar de administrar cursos a formar aprendices autónomos, medibles y capaces de transferir conocimiento.", href: "/marketplace", cta: "Explorar recursos" },
-  { icon: "business" as const, title: "Empresas", copy: "Convertir capacitación en criterio, liderazgo que enseña y cultura de aprendizaje permanente.", href: "/marketplace", cta: "Ver soluciones" },
+  { icon: "business" as const, title: "Empresas", copy: "Convertir capacitación en criterio, liderazgo que enseña y cultura de aprendizaje permanente.", href: "#empresas", cta: "Conocer entrenamiento" },
   { icon: "language" as const, title: "Idiomas", copy: "Desbloquear voz, confianza y pertenencia comunicativa con práctica deliberada y feedback claro.", href: "/sound-sprint", cta: "Conocer Sound Sprint" },
   { icon: "human" as const, title: "Aprendices", copy: "Recuperar una relación digna con aprender: menos bloqueo, más claridad, autonomía y progreso visible.", href: "/citas", cta: "Hablar con LANCELOT" }
 ];
@@ -121,7 +114,7 @@ function MethodSlider() {
       />)}
     </div>
     <div className="lti-visual-panel">
-      <span>Learning Transformation Infrastructure</span>
+      <span>Centro de Entrenamiento del Aprendizaje</span>
       <strong>Conciencia · Autonomía · Criterio</strong>
       <p>Una experiencia diseñada para que aprender no sea consumo de contenido, sino transformación verificable.</p>
     </div>
@@ -147,9 +140,8 @@ function MethodSlider() {
 }
 
 function LearningSystemDiagram() {
-  return <figure className="learning-system reveal" aria-label="Razones para creer en el sistema de aprendizaje Lancelot">
+  return <figure className="learning-system reveal" aria-label="Evidencia del sistema de aprendizaje Lancelot">
     <header className="system-evidence-header">
-      <span>Reasons to Believe</span>
       <p>La posición de Lancelot se sostiene cuando su filosofía se vuelve evidencia.</p>
     </header>
     <div className="system-evidence-layout">
@@ -168,6 +160,56 @@ function LearningSystemDiagram() {
     </div>
     <figcaption>Una filosofía solo tiene valor cuando cambia la forma de aprender, enseñar y acompañar.</figcaption>
   </figure>;
+}
+
+function ContactForm() {
+  const [status, setStatus] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const name = String(data.get("name") ?? "").trim();
+    const email = String(data.get("email") ?? "").trim();
+    const phone = String(data.get("phone") ?? "").trim();
+    const occupation = String(data.get("occupation") ?? "").trim();
+    const message = String(data.get("message") ?? "").trim();
+
+    setIsSubmitting(true);
+    setStatus("");
+    try {
+      const response = await fetch("/api/support", {
+        body: JSON.stringify({
+          email,
+          subject: `Contacto web — ${occupation || "LANCELOT"}`,
+          message: `Nombre: ${name}\nCorreo: ${email}\nTeléfono: ${phone || "No informado"}\nOcupación: ${occupation || "No informada"}\n\n${message}`
+        }),
+        headers: { "Content-Type": "application/json" },
+        method: "POST"
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "No fue posible enviar tu mensaje.");
+      form.reset();
+      setStatus("Gracias. Recibimos tu mensaje y pronto nos pondremos en contacto contigo.");
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "No fue posible enviar tu mensaje. Inténtalo de nuevo.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  return <form className="lti-contact-form" onSubmit={submit}>
+    <div className="lti-contact-fields">
+      <label>Nombre<input name="name" required placeholder="Tu nombre" /></label>
+      <label>Correo electrónico<input name="email" required type="email" placeholder="nombre@correo.com" /></label>
+      <label>Teléfono<input name="phone" placeholder="+57 300 000 0000" type="tel" /></label>
+      <label>Ocupación<input name="occupation" placeholder="Tu rol o profesión" /></label>
+    </div>
+    <label>¿Qué quieres transformar?<textarea minLength={10} name="message" placeholder="Cuéntanos qué quieres aprender, construir o desbloquear." required rows={5} /></label>
+    <button className="home-button home-button-primary lti-contact-submit" disabled={isSubmitting} type="submit">{isSubmitting ? "Enviando…" : "Desde el Ser para el Saber"}<span aria-hidden="true">→</span></button>
+    {status && <p className="lti-contact-status" role="status">{status}</p>}
+  </form>;
 }
 
 export function MethodologyHomePage() {
@@ -189,7 +231,7 @@ export function MethodologyHomePage() {
         <div className={`home-links${menuOpen ? " open" : ""}`}>
           <Link href="#categoria" onClick={close}>Categoría</Link>
           <Link href="#sistema" onClick={close}>Sistema</Link>
-          <Link href="#cultura" onClick={close}>Cultura</Link>
+          <Link href="#empresas" onClick={close}>Empresas</Link>
           <Link href="/marketplace" onClick={close}>Experiencias</Link>
           <ButtonPrimary href="#contacto">Empezar</ButtonPrimary>
         </div>
@@ -267,20 +309,7 @@ export function MethodologyHomePage() {
           <p>LANCELOT habla con claridad, profundidad y respeto. No infantiliza, no grita, no promete magia. Su voz existe para que quien escucha comprenda mejor el mundo y se comprenda mejor a sí mismo.</p>
         </div>
         <div className="lti-word-board reveal">
-          {["Comprender", "Revelar", "Observar", "Ajustar", "Practicar", "Conectar", "Transformar", "Autonomía", "Criterio", "Evidencia", "Propósito", "Transferencia"].map((word) => <span key={word}>{word}</span>)}
-        </div>
-      </div>
-    </section>
-
-    <section className="method-process-section lti-process">
-      <div className="home-shell">
-        <SectionTitle eyebrow="Learning Thinking" title="Toda decisión comienza con una pregunta de aprendizaje" copy="La cultura LANCELOT convierte experiencia en aprendizaje, aprendizaje en criterio y criterio en valor para otros." />
-        <div className="lti-path">
-          {transformationPath.map((step, index) => <article className="reveal" key={step.label}>
-            <b>{String(index + 1).padStart(2, "0")}</b>
-            <h3>{step.label}</h3>
-            <p>{step.question}</p>
-          </article>)}
+          {["Comprender", "Revelar", "Observar", "Ajustar", "Practicar", "Conectar", "Transformar", "Autonomía", "Criterio", "Evidencia", "Propósito", "Transferencia"].map((word) => <span key={word} tabIndex={0}>{word}</span>)}
         </div>
       </div>
     </section>
@@ -314,7 +343,7 @@ export function MethodologyHomePage() {
       </div>
     </section>
 
-    <section className="lti-culture-section lti-enterprise" id="cultura">
+    <section className="lti-culture-section lti-enterprise" id="empresas">
       <div className="home-shell">
         <header className="enterprise-intro reveal">
           <p className="home-kicker">Entrenamiento Lancelot para empresas</p>
@@ -352,34 +381,40 @@ export function MethodologyHomePage() {
             </ul>
           </article>
         </div>
-        <p className="enterprise-outcome reveal">Equipos que aprenden mejor encuentran más y mejores soluciones.</p>
+        <Link className="enterprise-outcome reveal" href="#empresas">Explorar el entrenamiento para empresas <b>→</b></Link>
       </div>
     </section>
 
     <section className="transformation-section lti-manifesto">
-      <div className="home-shell transformation-frame reveal">
+      <div className="home-shell lti-manifesto-frame reveal">
         <CrownMark />
-        <SectionTitle eyebrow="Manifiesto" title="El conocimiento no completa al ser humano. Lo revela." copy="LANCELOT no existe para enseñar más contenidos; existe para que más personas vuelvan a creer, con evidencia, en su capacidad de aprender." />
-        <div className="transformation-list">
-          <span>Claridad</span>
-          <span>Autonomía</span>
-          <span>Criterio</span>
-          <span>Práctica</span>
-          <span>Propósito</span>
+        <header className="lti-manifesto-copy">
+          <p className="home-kicker">Manifiesto LANCELOT</p>
+          <h2>Donde otros ven contenidos por enseñar, LANCELOT ve seres humanos por revelar.</h2>
+          <p>LANCELOT existe para reconciliar conocimiento y ser: para que cada persona descubra capacidades, construya criterio y sostenga su crecimiento con autonomía, humanidad y propósito.</p>
+        </header>
+        <div className="lti-manifesto-principles">
+          <span>La dignidad precede al conocimiento.</span>
+          <span>La práctica convierte el error en evidencia.</span>
+          <span>La IA sirve al criterio, no lo sustituye.</span>
         </div>
-        <blockquote>Desde el ser para el saber.</blockquote>
+        <blockquote>El conocimiento no completa al ser humano. Lo revela.</blockquote>
       </div>
     </section>
 
-    <section className="method-final lti-final" id="contacto">
-      <div className="home-shell reveal">
-        <BrandLockup />
-        <p>El futuro necesita personas capaces de aprender durante toda la vida</p>
-        <h2>Construyamos una experiencia de aprendizaje con claridad, evidencia y transformación.</h2>
-        <div className="home-actions">
-          <ButtonPrimary href="/citas">Hablar con LANCELOT</ButtonPrimary>
-          <ButtonSecondary href="/marketplace">Explorar marketplace</ButtonSecondary>
+    <section className="lti-contact" id="contacto">
+      <div className="home-shell lti-contact-layout reveal">
+        <div className="lti-contact-copy">
+          <BrandLockup />
+          <p className="home-kicker">Una conversación puede abrir una ruta</p>
+          <h2>Empieza a construir una relación distinta con aprender.</h2>
+          <p>Cuéntanos qué quieres transformar. Diseñaremos contigo el siguiente paso para aprender con claridad, evidencia y propósito.</p>
+          <div className="home-actions">
+            <ButtonPrimary href="#categoria">Conoce LANCELOT</ButtonPrimary>
+            <ButtonSecondary href="#sistema">Ver el sistema</ButtonSecondary>
+          </div>
         </div>
+        <ContactForm />
       </div>
     </section>
 
@@ -389,7 +424,7 @@ export function MethodologyHomePage() {
         <nav aria-label="Navegación del footer">
           <Link href="#categoria">Categoría</Link>
           <Link href="#sistema">Sistema</Link>
-          <Link href="#cultura">Cultura</Link>
+          <Link href="#empresas">Empresas</Link>
           <Link href="/sound-sprint">Sound Sprint</Link>
           <Link href="/marketplace">Marketplace</Link>
         </nav>

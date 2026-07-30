@@ -2749,10 +2749,10 @@ h1 {
 
 .system-evidence-header p {
   color: #d9ddda;
-  font-size: .78rem;
-  line-height: 1.45;
+  font-size: 1rem;
+  line-height: 1.38;
   margin: 0;
-  max-width: 340px;
+  max-width: 420px;
   text-align: left;
 }
 
@@ -2828,20 +2828,20 @@ h1 {
 .system-proof b {
   color: var(--lti-gold);
   font-family: 'Cormorant Garamond', serif;
-  font-size: .7rem;
+  font-size: .78rem;
   letter-spacing: .1em;
 }
 
 .system-proof strong {
   color: #fff8e9;
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.03rem;
+  font-size: 1.13rem;
   line-height: 1.05;
 }
 
 .system-proof p {
   color: #c9d0cb;
-  font-size: .7rem;
+  font-size: .78rem;
   line-height: 1.4;
   margin: 0;
 }
@@ -3433,10 +3433,31 @@ h1 {
 .lti-manifesto-principles span {
   color: #e9e2d4;
   font-size: .86rem;
+  isolation: isolate;
   line-height: 1.45;
   min-height: 86px;
   padding: 21px 26px;
+  position: relative;
+  transition: box-shadow .3s ease, color .3s ease, transform .3s ease;
 }
+
+.lti-manifesto-principles span::before {
+  background: radial-gradient(circle at 16% 10%, rgba(255, 255, 255, .95), transparent 28%), linear-gradient(135deg, #f4dfae 0%, #c99432 44%, #725012 100%);
+  content: "";
+  inset: 0;
+  opacity: 0;
+  position: absolute;
+  transition: opacity .3s ease;
+  z-index: -1;
+}
+
+.lti-manifesto-principles span:hover {
+  box-shadow: 0 15px 28px rgba(0, 0, 0, .24);
+  color: #152230;
+  transform: translateY(-6px);
+}
+
+.lti-manifesto-principles span:hover::before { opacity: 1; }
 
 .lti-manifesto-principles span:not(:last-child) { border-right: 1px solid rgba(218, 168, 73, .32); }
 
@@ -3541,8 +3562,37 @@ h1 {
   box-shadow: 0 0 0 3px rgba(231, 181, 79, .13);
 }
 
+.lti-contact-actions {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
 .lti-contact-submit { justify-content: center; width: 100%; }
-.lti-contact-submit:disabled { cursor: wait; opacity: .7; }
+
+.lti-contact-form-submit {
+  background: transparent;
+  border: 1px solid rgba(225, 188, 112, .7);
+  color: #fff8e9;
+  cursor: pointer;
+  font: inherit;
+  font-size: .82rem;
+  letter-spacing: .08em;
+  min-height: 50px;
+  padding: 0 20px;
+  text-transform: uppercase;
+  transition: background-color .2s ease, color .2s ease;
+}
+
+.lti-contact-form-submit:hover,
+.lti-contact-form-submit:focus-visible {
+  background: #f2d58e;
+  color: #152230;
+  outline: 0;
+}
+
+.lti-contact-form-submit:disabled { cursor: wait; opacity: .7; }
 
 .lti-contact-status {
   color: #f3d78e;
@@ -3742,6 +3792,14 @@ h1 {
 
   .lti-contact-fields {
     grid-template-columns: 1fr;
+  }
+
+  .lti-contact-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .lti-contact-form-submit {
+    width: 100%;
   }
 
   .lti-contact-copy .brand-lockup {

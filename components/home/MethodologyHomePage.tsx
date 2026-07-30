@@ -142,6 +142,7 @@ function MethodSlider() {
 function LearningSystemDiagram() {
   return <figure className="learning-system reveal" aria-label="Evidencia del sistema de aprendizaje Lancelot">
     <header className="system-evidence-header">
+      <span>Metodología</span>
       <p>La posición de Lancelot se sostiene cuando su filosofía se vuelve evidencia.</p>
     </header>
     <div className="system-evidence-layout">
@@ -207,7 +208,10 @@ function ContactForm() {
       <label>Ocupación<input name="occupation" placeholder="Tu rol o profesión" /></label>
     </div>
     <label>¿Qué quieres transformar?<textarea minLength={10} name="message" placeholder="Cuéntanos qué quieres aprender, construir o desbloquear." required rows={5} /></label>
-    <button className="home-button home-button-primary lti-contact-submit" disabled={isSubmitting} type="submit">{isSubmitting ? "Enviando…" : "Desde el Ser para el Saber"}<span aria-hidden="true">→</span></button>
+    <div className="lti-contact-actions">
+      <Link className="home-button home-button-primary lti-contact-submit" href="#metodologia">Metodología<span aria-hidden="true">→</span></Link>
+      <button className="lti-contact-form-submit" disabled={isSubmitting} type="submit">{isSubmitting ? "Enviando…" : "Enviar mensaje"}</button>
+    </div>
     {status && <p className="lti-contact-status" role="status">{status}</p>}
   </form>;
 }
@@ -229,11 +233,11 @@ export function MethodologyHomePage() {
         <Link className="home-brand" href="#inicio" onClick={close}><BrandLockup compact /></Link>
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-label="Abrir menú"><i /><i /><i /></button>
         <div className={`home-links${menuOpen ? " open" : ""}`}>
-          <Link href="#categoria" onClick={close}>Categoría</Link>
-          <Link href="#sistema" onClick={close}>Sistema</Link>
+          <Link href="#portafolio" onClick={close}>Portafolio</Link>
+          <Link href="#metodologia" onClick={close}>Metodología</Link>
           <Link href="#empresas" onClick={close}>Empresas</Link>
-          <Link href="/marketplace" onClick={close}>Experiencias</Link>
-          <ButtonPrimary href="#contacto">Empezar</ButtonPrimary>
+          <Link href="#manifiesto" onClick={close}>Manifiesto</Link>
+          <ButtonPrimary href="#contacto">Conocer</ButtonPrimary>
         </div>
       </div>
     </nav>
@@ -246,8 +250,8 @@ export function MethodologyHomePage() {
           <h1>LANCELOT transforma la manera de aprender en la era de la IA.</h1>
           <p className="hero-lead">Aprender no es llenarse de información. Es descubrir capacidades, construir autonomía y transformar la relación con el conocimiento.</p>
           <div className="home-actions">
-            <ButtonPrimary href="#categoria">Conocer la categoría</ButtonPrimary>
-            <ButtonSecondary href="/marketplace">Explorar experiencias</ButtonSecondary>
+            <ButtonPrimary href="#contacto">Conocer</ButtonPrimary>
+            <ButtonSecondary href="#metodologia">Metodología</ButtonSecondary>
           </div>
           <dl className="lti-proof-row" aria-label="Principios centrales">
             <div><dt>01</dt><dd>Metacognición activa</dd></div>
@@ -286,7 +290,7 @@ export function MethodologyHomePage() {
       </div>
     </section>
 
-    <section className="lti-system-section" id="sistema">
+    <section className="lti-system-section" id="metodologia">
       <div className="home-shell lti-system-grid">
         <LearningSystemDiagram />
         <div className="reveal">
@@ -314,7 +318,7 @@ export function MethodologyHomePage() {
       </div>
     </section>
 
-    <section className="applications-section lti-audiences">
+    <section className="applications-section lti-audiences" id="portafolio">
       <div className="home-shell">
         <header className="lti-audiences-intro reveal">
           <div className="lti-audiences-ornament" aria-hidden="true" />
@@ -381,11 +385,11 @@ export function MethodologyHomePage() {
             </ul>
           </article>
         </div>
-        <Link className="enterprise-outcome reveal" href="#empresas">Explorar el entrenamiento para empresas <b>→</b></Link>
+        <Link className="enterprise-outcome reveal" href="#contacto">Conoce LANCELOT <b>→</b></Link>
       </div>
     </section>
 
-    <section className="transformation-section lti-manifesto">
+    <section className="transformation-section lti-manifesto" id="manifiesto">
       <div className="home-shell lti-manifesto-frame reveal">
         <CrownMark />
         <header className="lti-manifesto-copy">
@@ -410,8 +414,8 @@ export function MethodologyHomePage() {
           <h2>Empieza a construir una relación distinta con aprender.</h2>
           <p>Cuéntanos qué quieres transformar. Diseñaremos contigo el siguiente paso para aprender con claridad, evidencia y propósito.</p>
           <div className="home-actions">
-            <ButtonPrimary href="#categoria">Conoce LANCELOT</ButtonPrimary>
-            <ButtonSecondary href="#sistema">Ver el sistema</ButtonSecondary>
+            <ButtonPrimary href="#portafolio">Conoce LANCELOT</ButtonPrimary>
+            <ButtonSecondary href="#metodologia">Ver la metodología</ButtonSecondary>
           </div>
         </div>
         <ContactForm />
@@ -422,8 +426,8 @@ export function MethodologyHomePage() {
       <div className="home-shell">
         <BrandLockup />
         <nav aria-label="Navegación del footer">
-          <Link href="#categoria">Categoría</Link>
-          <Link href="#sistema">Sistema</Link>
+          <Link href="#portafolio">Portafolio</Link>
+          <Link href="#metodologia">Metodología</Link>
           <Link href="#empresas">Empresas</Link>
           <Link href="/sound-sprint">Sound Sprint</Link>
           <Link href="/marketplace">Marketplace</Link>
@@ -431,6 +435,6 @@ export function MethodologyHomePage() {
         <p>© 2026 LANCELOT. Todos los derechos reservados.</p>
       </div>
     </footer>
-    <div className="mobile-sticky"><ButtonPrimary href="#contacto">Empezar</ButtonPrimary></div>
+    <div className="mobile-sticky"><ButtonPrimary href="#contacto">Conocer</ButtonPrimary></div>
   </main>;
 }

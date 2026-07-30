@@ -2777,6 +2777,7 @@ h1 {
   padding: 22px;
   position: relative;
   text-align: center;
+  transition: background .32s ease, box-shadow .32s ease, transform .32s ease;
 }
 
 .system-core::after {
@@ -2801,6 +2802,12 @@ h1 {
   text-transform: none;
 }
 
+.system-core:hover {
+  background: linear-gradient(145deg, #fffdf8, #d8b66e);
+  box-shadow: 0 18px 30px rgba(0, 0, 0, .24);
+  transform: translateY(-5px);
+}
+
 .system-evidence-grid {
   display: grid;
   gap: 10px;
@@ -2814,6 +2821,8 @@ h1 {
   gap: 5px;
   min-height: 116px;
   padding: 13px;
+  position: relative;
+  transition: background-color .28s ease, border-color .28s ease, box-shadow .28s ease, opacity .28s ease, transform .28s ease;
 }
 
 .system-proof b {
@@ -2835,6 +2844,28 @@ h1 {
   font-size: .7rem;
   line-height: 1.4;
   margin: 0;
+}
+
+.system-evidence-grid:hover .system-proof:not(:hover) {
+  opacity: .62;
+}
+
+.system-proof:hover {
+  background: linear-gradient(145deg, rgba(230, 183, 89, .23), rgba(20, 52, 86, .9));
+  border-color: var(--lti-gold);
+  box-shadow: 0 15px 28px rgba(0, 0, 0, .24);
+  opacity: 1;
+  transform: translateY(-5px) scale(1.018);
+  z-index: 2;
+}
+
+.system-proof:hover b,
+.system-proof:hover strong {
+  color: #f5ca70;
+}
+
+.system-proof:hover p {
+  color: #f0f2ef;
 }
 
 .learning-system figcaption {

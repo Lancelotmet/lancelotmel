@@ -2933,7 +2933,229 @@ h1 {
 }
 
 .lti-audiences {
-  background: linear-gradient(145deg, #0a0a09, #10253f);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(160, 112, 36, .12), transparent 28%),
+    linear-gradient(145deg, #020b14 0%, #061525 52%, #03101c 100%);
+  overflow: hidden;
+}
+
+.lti-audiences .home-shell {
+  max-width: 1392px;
+}
+
+.lti-audiences > .home-shell > .home-section-title {
+  display: none;
+}
+
+.lti-audiences-intro {
+  margin: 0 auto;
+  max-width: 900px;
+  text-align: center;
+}
+
+.lti-audiences-ornament {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.lti-audiences-ornament::before,
+.lti-audiences-ornament::after {
+  background: linear-gradient(90deg, transparent, rgba(218, 164, 69, .85));
+  content: "";
+  height: 1px;
+  width: min(18vw, 140px);
+}
+
+.lti-audiences-ornament::after {
+  background: linear-gradient(90deg, rgba(218, 164, 69, .85), transparent);
+}
+
+.lti-audiences-ornament {
+  background: linear-gradient(135deg, transparent 45%, #dda845 46%, #dda845 54%, transparent 55%);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 14px 14px;
+}
+
+.lti-audiences-intro h2 {
+  color: #f4d69d;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.65rem, 5.2vw, 5.25rem);
+  font-weight: 500;
+  letter-spacing: .085em;
+  line-height: .95;
+  margin: 0;
+}
+
+.lti-audiences-lead {
+  color: #e3b657 !important;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.24rem, 2.1vw, 1.78rem);
+  line-height: 1.3;
+  margin: 20px 0 12px !important;
+}
+
+.lti-audiences-intro > p:last-child {
+  color: #b7c3d0;
+  font-size: clamp(.94rem, 1.5vw, 1.12rem);
+  line-height: 1.5;
+  margin: 0 auto;
+  max-width: 750px;
+}
+
+.lti-audiences .application-grid {
+  gap: 16px;
+  margin-top: 50px;
+}
+
+.lti-audiences .application-card {
+  background: rgba(3, 15, 27, .58);
+  border: 1px solid rgba(205, 151, 54, .8);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  padding: 5px;
+}
+
+.lti-audiences .application-card::before {
+  border-color: rgba(235, 185, 86, .34);
+  inset: 10px;
+  z-index: 1;
+}
+
+.application-card-image {
+  aspect-ratio: 16 / 6;
+  overflow: hidden;
+  position: relative;
+}
+
+.application-card-image::after {
+  background: linear-gradient(180deg, transparent 60%, rgba(2, 12, 22, .34));
+  content: "";
+  inset: 0;
+  position: absolute;
+}
+
+.application-card-image img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .65s ease;
+  width: 100%;
+}
+
+.application-card:hover .application-card-image img {
+  transform: scale(1.035);
+}
+
+.application-card-number {
+  align-items: center;
+  background: rgba(2, 16, 29, .84);
+  border: 1px solid rgba(229, 173, 67, .86);
+  color: #efbd60;
+  display: flex;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.65rem;
+  height: 48px;
+  justify-content: center;
+  left: 20px;
+  position: absolute;
+  top: 20px;
+  width: 48px;
+  z-index: 2;
+}
+
+.application-card-content {
+  align-items: center;
+  display: grid;
+  gap: 22px;
+  grid-template-columns: 62px minmax(0, 1fr) auto;
+  min-height: 132px;
+  padding: 22px 28px 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.lti-audiences .application-card .method-icon {
+  align-items: center;
+  border: 1px solid rgba(219, 168, 73, .58);
+  color: #ecc16a;
+  display: flex;
+  height: 62px;
+  justify-content: center;
+  width: 62px;
+}
+
+.lti-audiences .application-card .method-icon svg {
+  height: 29px;
+  width: 29px;
+}
+
+.lti-audiences .application-card-content > span:not(.method-icon) {
+  color: #d9a948;
+  display: block;
+  font-size: .63rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  margin: 0 0 6px;
+  text-transform: none;
+}
+
+.lti-audiences .application-card h3 {
+  color: #f9f0dd;
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  line-height: 1;
+  margin: 10px 0 7px;
+}
+
+.lti-audiences .application-card p {
+  color: #c3cbd4;
+  font-size: .9rem;
+  line-height: 1.48;
+  margin: 0;
+}
+
+.lti-audiences .application-card a {
+  align-self: center;
+  color: #f0bd5c;
+  font-size: .86rem;
+  position: static;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.lti-audiences .application-card a b {
+  font-size: 1.3rem;
+  font-weight: 400;
+  margin-left: 13px;
+}
+
+@media (max-width: 1040px) {
+  .lti-audiences .application-card-content {
+    align-items: start;
+    grid-template-columns: 56px minmax(0, 1fr);
+  }
+
+  .lti-audiences .application-card a {
+    grid-column: 2;
+    justify-self: start;
+    text-align: left;
+  }
+}
+
+@media (max-width: 640px) {
+  .lti-audiences-intro h2 { letter-spacing: .055em; }
+  .lti-audiences .application-grid { margin-top: 34px; }
+  .application-card-image { aspect-ratio: 16 / 8; }
+  .application-card-number { left: 15px; top: 15px; }
+  .lti-audiences .application-card-content { gap: 16px; padding: 19px 18px 20px; }
+  .lti-audiences .application-card .method-icon { height: 52px; width: 52px; }
+  .lti-audiences .application-card .method-icon svg { height: 25px; width: 25px; }
+  .lti-audiences .application-card p { font-size: .84rem; }
 }
 
 .lti-culture-section {

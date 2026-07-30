@@ -50,6 +50,13 @@ const audiences = [
   { icon: "human" as const, title: "Aprendices", copy: "Recuperar una relación digna con aprender: menos bloqueo, más claridad, autonomía y progreso visible.", href: "/citas", cta: "Hablar con LANCELOT" }
 ];
 
+const audienceVisuals: Record<string, { image: string; number: string }> = {
+  Instituciones: { image: "/brand/applications/instituciones.png", number: "01" },
+  Empresas: { image: "/brand/applications/empresas.png", number: "02" },
+  Idiomas: { image: "/brand/applications/idiomas.png", number: "03" },
+  Aprendices: { image: "/brand/applications/aprendices.png", number: "04" }
+};
+
 const reasonsToBelieve = [
   { number: "01", title: "Doble Desbloqueo", copy: "Cada experiencia desarrolla una capacidad externa y una facultad interna." },
   { number: "02", title: "Metacognición transversal", copy: "Observar cómo se aprende es una capa presente en toda la experiencia." },
@@ -280,14 +287,26 @@ export function MethodologyHomePage() {
 
     <section className="applications-section lti-audiences">
       <div className="home-shell">
+        <header className="lti-audiences-intro reveal">
+          <div className="lti-audiences-ornament" aria-hidden="true" />
+          <h2>LANCELOT EN ACCIÓN</h2>
+          <p className="lti-audiences-lead">Una metodología. Cuatro formas de transformar el aprendizaje.</p>
+          <p>No enseñamos más contenido. Diseñamos experiencias para convertir cada intento en comprensión, autonomía y dominio visible.</p>
+        </header>
         <SectionTitle light eyebrow="Una infraestructura, múltiples caminos" title="LANCELOT acompaña personas e instituciones que necesitan aprender mejor" copy="Cambia el contexto. La promesa permanece: claridad, autonomía, criterio y transformación." />
         <div className="application-grid">
           {audiences.map((audience) => <article className="application-card reveal" key={audience.title}>
+            <div className="application-card-image">
+              <img src={audienceVisuals[audience.title].image} alt="" />
+              <span className="application-card-number" aria-hidden="true">{audienceVisuals[audience.title].number}</span>
+            </div>
+            <div className="application-card-content">
             <MethodIcon name={audience.icon} />
             <span>Aplicación</span>
             <h3>{audience.title}</h3>
             <p>{audience.copy}</p>
             <Link href={audience.href}>{audience.cta} <b>→</b></Link>
+            </div>
           </article>)}
         </div>
       </div>

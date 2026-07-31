@@ -37,10 +37,10 @@ const principles = [
 ];
 
 const audiences = [
-  { icon: "academy" as const, title: "Instituciones", copy: "Pasar de administrar cursos a formar aprendices autónomos, medibles y capaces de transferir conocimiento.", href: "/marketplace", cta: "Explorar recursos" },
+  { icon: "academy" as const, title: "Instituciones", copy: "Pasar de administrar cursos a formar aprendices autónomos, medibles y capaces de transferir conocimiento.", href: "#contacto", cta: "Conoce Lancelot" },
   { icon: "business" as const, title: "Empresas", copy: "Convertir capacitación en criterio, liderazgo que enseña y cultura de aprendizaje permanente.", href: "#empresas", cta: "Conocer entrenamiento" },
-  { icon: "language" as const, title: "Idiomas", copy: "Desbloquear voz, confianza y pertenencia comunicativa con práctica deliberada y feedback claro.", href: "/sound-sprint", cta: "Conocer Sound Sprint" },
-  { icon: "human" as const, title: "Aprendices", copy: "Recuperar una relación digna con aprender: menos bloqueo, más claridad, autonomía y progreso visible.", href: "/citas", cta: "Hablar con LANCELOT" }
+  { icon: "language" as const, title: "Idiomas", copy: "Desbloquear voz, confianza y pertenencia comunicativa con práctica deliberada y feedback claro.", href: "/sound-sprint", cta: "Empieza Ahora" },
+  { icon: "human" as const, title: "Aprendices", copy: "Recuperar una relación digna con aprender: menos bloqueo, más claridad, autonomía y progreso visible.", href: "/citas", cta: "Explora con Lancelot" }
 ];
 
 const audienceVisuals: Record<string, { image: string; number: string }> = {
@@ -209,7 +209,7 @@ function ContactForm() {
     </div>
     <label>¿Qué quieres transformar?<textarea minLength={10} name="message" placeholder="Cuéntanos qué quieres aprender, construir o desbloquear." required rows={5} /></label>
     <div className="lti-contact-actions">
-      <Link className="home-button home-button-primary lti-contact-submit" href="#metodologia">Metodología<span aria-hidden="true">→</span></Link>
+      <Link className="home-button home-button-primary lti-contact-submit" href="#inicio">Desde el Ser para El Saber<span aria-hidden="true">→</span></Link>
       <button className="lti-contact-form-submit" disabled={isSubmitting} type="submit">{isSubmitting ? "Enviando…" : "Enviar mensaje"}</button>
     </div>
     {status && <p className="lti-contact-status" role="status">{status}</p>}
@@ -336,7 +336,6 @@ export function MethodologyHomePage() {
             <div className="application-card-content">
             <MethodIcon name={audience.icon} />
             <div className="application-card-copy">
-            <span>Aplicación</span>
             <h3>{audience.title}</h3>
             <p>{audience.copy}</p>
             </div>
@@ -414,8 +413,8 @@ export function MethodologyHomePage() {
           <h2>Empieza a construir una relación distinta con aprender.</h2>
           <p>Cuéntanos qué quieres transformar. Diseñaremos contigo el siguiente paso para aprender con claridad, evidencia y propósito.</p>
           <div className="home-actions">
-            <ButtonPrimary href="#portafolio">Conoce LANCELOT</ButtonPrimary>
-            <ButtonSecondary href="#metodologia">Ver la metodología</ButtonSecondary>
+            <ButtonPrimary href="#portafolio">Portafolio</ButtonPrimary>
+            <ButtonSecondary href="#metodologia">Metodología</ButtonSecondary>
           </div>
         </div>
         <ContactForm />
@@ -429,8 +428,7 @@ export function MethodologyHomePage() {
           <Link href="#portafolio">Portafolio</Link>
           <Link href="#metodologia">Metodología</Link>
           <Link href="#empresas">Empresas</Link>
-          <Link href="/sound-sprint">Sound Sprint</Link>
-          <Link href="/marketplace">Marketplace</Link>
+          <Link href="#manifiesto">Manifiesto</Link>
         </nav>
         <p>© 2026 LANCELOT. Todos los derechos reservados.</p>
       </div>

@@ -40,7 +40,7 @@ const audiences = [
   { icon: "academy" as const, title: "Instituciones", copy: "Pasar de administrar cursos a formar aprendices autónomos, medibles y capaces de transferir conocimiento.", href: "#contacto", cta: "Conoce Lancelot" },
   { icon: "business" as const, title: "Empresas", copy: "Convertir capacitación en criterio, liderazgo que enseña y cultura de aprendizaje permanente.", href: "#empresas", cta: "Conocer entrenamiento" },
   { icon: "language" as const, title: "Idiomas", copy: "Desbloquear voz, confianza y pertenencia comunicativa con práctica deliberada y feedback claro.", href: "/sound-sprint", cta: "Empieza Ahora" },
-  { icon: "human" as const, title: "Aprendices", copy: "Recuperar una relación digna con aprender: menos bloqueo, más claridad, autonomía y progreso visible.", href: "/citas", cta: "Explora con Lancelot" }
+  { icon: "human" as const, title: "Aprendices", copy: "Recuperar una relación digna con aprender: menos bloqueo, más claridad, autonomía y progreso visible.", href: "/orientacion", cta: "Conocer orientación" }
 ];
 
 const audienceVisuals: Record<string, { image: string; number: string }> = {
@@ -166,6 +166,8 @@ function LearningSystemDiagram() {
 function ContactForm() {
   const [status, setStatus] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [portfolio, setPortfolio] = useState("");
+  const [service, setService] = useState("");
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -175,6 +177,8 @@ function ContactForm() {
     const email = String(data.get("email") ?? "").trim();
     const phone = String(data.get("phone") ?? "").trim();
     const occupation = String(data.get("occupation") ?? "").trim();
+    const selectedPortfolio = String(data.get("portfolio") ?? "").trim();
+    const selectedService = String(data.get("service") ?? "").trim();
     const message = String(data.get("message") ?? "").trim();
 
     setIsSubmitting(true);
@@ -183,8 +187,8 @@ function ContactForm() {
       const response = await fetch("/api/support", {
         body: JSON.stringify({
           email,
-          subject: `Contacto web — ${occupation || "LANCELOT"}`,
-          message: `Nombre: ${name}\nCorreo: ${email}\nTeléfono: ${phone || "No informado"}\nOcupación: ${occupation || "No informada"}\n\n${message}`
+          subject: `Contacto web — ${selectedPortfolio}${selectedService ? `: ${selectedService}` : ""}`,
+          message: `Nombre: ${name}\nCorreo: ${email}\nTeléfono: ${phone || "No informado"}\nOcupación: ${occupation || "No informada"}\nPortafolio: ${selectedPortfolio}\n${selectedPortfolio === "Aprendices" ? `Servicio: ${selectedService}\n` : ""}\n${message}`
         }),
         headers: { "Content-Type": "application/json" },
         method: "POST"
@@ -192,6 +196,8 @@ function ContactForm() {
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "No fue posible enviar tu mensaje.");
       form.reset();
+      setPortfolio("");
+      setService("");
       setStatus("Gracias. Recibimos tu mensaje y pronto nos pondremos en contacto contigo.");
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "No fue posible enviar tu mensaje. Inténtalo de nuevo.");
@@ -206,6 +212,8 @@ function ContactForm() {
       <label>Correo electrónico<input name="email" required type="email" placeholder="nombre@correo.com" /></label>
       <label>Teléfono<input name="phone" placeholder="+57 300 000 0000" type="tel" /></label>
       <label>Ocupación<input name="occupation" placeholder="Tu rol o profesión" /></label>
+      <label>Portafolio<select name="portfolio" required value={portfolio} onChange={(event) => { setPortfolio(event.target.value); setService(""); }}><option value="" disabled>Selecciona una opción</option><option>Instituciones</option><option>Empresas</option><option>Idiomas</option><option>Aprendices</option></select></label>
+      {portfolio === "Aprendices" && <label>Servicio<select name="service" required value={service} onChange={(event) => setService(event.target.value)}><option value="" disabled>Selecciona un servicio</option><option>Servicio Psicopedagógico</option><option>Orientación Vocacional</option></select></label>}
     </div>
     <label>¿Qué quieres transformar?<textarea minLength={10} name="message" placeholder="Cuéntanos qué quieres aprender, construir o desbloquear." required rows={5} /></label>
     <div className="lti-contact-actions">

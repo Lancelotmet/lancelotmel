@@ -33,6 +33,7 @@ export const SERVICES_BY_TYPE = {
   ],
   Consulta: [
     "Consulta inicial",
+    "Orientacion vocacional",
     "Consulta de seguimiento",
     "Consulta virtual",
     "Consulta para instituciones"

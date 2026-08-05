@@ -1,4 +1,5 @@
 import BookingForm from "./booking-form";
+import { Suspense } from "react";
 
 export default function CitasPage() {
   return (
@@ -39,7 +40,9 @@ export default function CitasPage() {
             <h2>Nuevo encuentro</h2>
             <span className="pill">America/Bogota</span>
           </div>
-          <BookingForm />
+          <Suspense fallback={<p className="status info">Preparando agenda...</p>}>
+            <BookingForm />
+          </Suspense>
         </section>
       </div>
     </main>

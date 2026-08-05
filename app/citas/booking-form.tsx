@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { AvailableSlot, ENCOUNTER_TYPES, SERVICES_BY_TYPE } from "@/lib/appointments";
 
 type SubmitState =
@@ -15,11 +16,17 @@ function toDateInputValue(date: Date) {
 }
 
 export default function BookingForm() {
+  const searchParams = useSearchParams();
   const today = useMemo(() => toDateInputValue(new Date()), []);
   const [date, setDate] = useState(today);
   const [slots, setSlots] = useState<AvailableSlot[]>([]);
   const [selectedSlot, setSelectedSlot] = useState("");
-  const [encounterType, setEncounterType] = useState<(typeof ENCOUNTER_TYPES)[number]>("Cita");
+  const requestedType = searchParams.get("encounterType");
+  const initialType = (ENCOUNTER_TYPES as readonly string[]).includes(requestedType || "")
+    ? requestedType as (typeof ENCOUNTER_TYPES)[number]
+    : "Cita";
+  const [encounterType, setEncounterType] = useState<(typeof ENCOUNTER_TYPES)[number]>(initialType);
+  const [service, setService] = useState("");
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [state, setState] = useState<SubmitState>({ type: "idle", message: "" });
@@ -62,6 +69,12 @@ export default function BookingForm() {
     };
   }, [date]);
 
+  useEffect(() => {
+    const requestedService = searchParams.get("service");
+    const supportedServices = SERVICES_BY_TYPE[encounterType] as readonly string[];
+    setService(requestedService && supportedServices.includes(requestedService) ? requestedService : supportedServices[0]);
+  }, [encounterType, searchParams]);
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const bookingForm = event.currentTarget;
@@ -74,7 +87,7 @@ export default function BookingForm() {
       email: String(form.get("email") || ""),
       phone: String(form.get("phone") || ""),
       encounterType: String(form.get("encounterType") || ""),
-      service: String(form.get("service") || ""),
+      service,
       startsAt: selectedSlot,
       notes: String(form.get("notes") || "")
     };
@@ -150,7 +163,7 @@ export default function BookingForm() {
       </div>
       <div className="field">
         <label htmlFor="service">Servicio o proceso</label>
-        <select id="service" name="service" required key={encounterType}>
+        <select id="service" name="service" required value={service} onChange={(event) => setService(event.target.value)}>
           {SERVICES_BY_TYPE[encounterType].map((service) => (
             <option key={service} value={service}>
               {service}

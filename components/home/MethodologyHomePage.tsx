@@ -39,7 +39,7 @@ const principles = [
 const audiences = [
   { icon: "academy" as const, title: "Instituciones", copy: "Pasar de administrar cursos a formar aprendices autónomos, medibles y capaces de transferir conocimiento.", href: "#contacto", cta: "Conoce Lancelot" },
   { icon: "business" as const, title: "Empresas", copy: "Convertir capacitación en criterio, liderazgo que enseña y cultura de aprendizaje permanente.", href: "#empresas", cta: "Conocer entrenamiento" },
-  { icon: "language" as const, title: "Idiomas", copy: "Desbloquear voz, confianza y pertenencia comunicativa con práctica deliberada y feedback claro.", href: "/sound-sprint", cta: "Empieza Ahora" },
+  { icon: "language" as const, title: "Idiomas", copy: "Desbloquear voz, confianza y pertenencia comunicativa con práctica deliberada y feedback claro.", href: "/idiomas", cta: "Conocer idiomas" },
   { icon: "human" as const, title: "Aprendices", copy: "Recuperar una relación digna con aprender: menos bloqueo, más claridad, autonomía y progreso visible.", href: "/orientacion", cta: "Conocer orientación" }
 ];
 

@@ -245,6 +245,7 @@ export function MethodologyHomePage() {
           <Link href="#metodologia" onClick={close}>Metodología</Link>
           <Link href="#empresas" onClick={close}>Empresas</Link>
           <Link href="#manifiesto" onClick={close}>Manifiesto</Link>
+          <Link href="/filosofia" onClick={close}>Filosofía</Link>
           <ButtonPrimary href="#contacto">Conocer</ButtonPrimary>
         </div>
       </div>
@@ -413,6 +414,14 @@ export function MethodologyHomePage() {
       </div>
     </section>
 
+    <section className="lti-library-invite">
+      <div className="home-shell lti-library-invite-frame reveal">
+        <span>Biblioteca Lancelot</span>
+        <div><p className="home-kicker">Filosofía, estrategia, lenguaje y cultura</p><h2>Una obra para leer la visión completa de Lancelot.</h2><p>Cuatro volúmenes que conectan la razón de existir de Lancelot con la forma en que habla, acompaña y construye cultura de aprendizaje.</p></div>
+        <Link className="home-button home-button-primary" href="/filosofia">Leer la filosofía <b aria-hidden="true">→</b></Link>
+      </div>
+    </section>
+
     <section className="lti-contact" id="contacto">
       <div className="home-shell lti-contact-layout reveal">
         <div className="lti-contact-copy">
@@ -437,6 +446,7 @@ export function MethodologyHomePage() {
           <Link href="#metodologia">Metodología</Link>
           <Link href="#empresas">Empresas</Link>
           <Link href="#manifiesto">Manifiesto</Link>
+          <Link href="/filosofia">Filosofía</Link>
         </nav>
         <p>© 2026 LANCELOT. Todos los derechos reservados.</p>
       </div>

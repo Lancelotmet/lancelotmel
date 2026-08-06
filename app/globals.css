@@ -4013,3 +4013,39 @@ h1 {
 @media (max-width: 600px) {
   .orientation-double-examples { grid-template-columns: 1fr; }
 }
+
+.languages-obstacles article,
+.languages-method-grid article,
+.languages-results article,
+.languages-principles span,
+.languages-audience span {
+  transition: background-color .25s ease, border-color .25s ease, box-shadow .25s ease, color .25s ease, transform .25s ease;
+}
+
+@media (hover: hover) {
+  .languages-obstacles article:hover,
+  .languages-method-grid article:hover,
+  .languages-results article:hover,
+  .languages-principles span:hover,
+  .languages-audience span:hover {
+    background: #000;
+    border-color: #000;
+    box-shadow: 0 14px 28px rgba(10, 10, 9, .2);
+    color: #fff;
+    position: relative;
+    transform: translateY(-4px);
+    z-index: 1;
+  }
+
+  .languages-obstacles article:hover span,
+  .languages-method-grid article:hover span,
+  .languages-results article:hover span { color: #f0ce88; }
+
+  .languages-obstacles article:hover h3,
+  .languages-method-grid article:hover h3,
+  .languages-results article:hover h3 { color: #fff; }
+
+  .languages-obstacles article:hover p,
+  .languages-method-grid article:hover p,
+  .languages-results article:hover p { color: #f5f2ea; }
+}

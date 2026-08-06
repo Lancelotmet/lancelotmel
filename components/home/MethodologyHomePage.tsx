@@ -188,7 +188,7 @@ function ContactForm() {
         body: JSON.stringify({
           email,
           subject: `Contacto web — ${selectedPortfolio}${selectedService ? `: ${selectedService}` : ""}`,
-          message: `Nombre: ${name}\nCorreo: ${email}\nTeléfono: ${phone || "No informado"}\nOcupación: ${occupation || "No informada"}\nPortafolio: ${selectedPortfolio}\n${selectedPortfolio === "Aprendices" ? `Servicio: ${selectedService}\n` : ""}\n${message}`
+          message: `Nombre: ${name}\nCorreo: ${email}\nTeléfono: ${phone || "No informado"}\nOcupación: ${occupation || "No informada"}\nPortafolio: ${selectedPortfolio}\n${selectedService ? `${selectedPortfolio === "Idiomas" ? "Ruta de idiomas" : "Servicio"}: ${selectedService}\n` : ""}\n${message}`
         }),
         headers: { "Content-Type": "application/json" },
         method: "POST"
@@ -214,6 +214,7 @@ function ContactForm() {
       <label>Ocupación<input name="occupation" placeholder="Tu rol o profesión" /></label>
       <label>Portafolio<select name="portfolio" required value={portfolio} onChange={(event) => { setPortfolio(event.target.value); setService(""); }}><option value="" disabled>Selecciona una opción</option><option>Instituciones</option><option>Empresas</option><option>Idiomas</option><option>Aprendices</option></select></label>
       {portfolio === "Aprendices" && <label>Servicio<select name="service" required value={service} onChange={(event) => setService(event.target.value)}><option value="" disabled>Selecciona un servicio</option><option>Servicio Psicopedagógico</option><option>Orientación Vocacional</option></select></label>}
+      {portfolio === "Idiomas" && <label>Ruta de idiomas<select name="service" required value={service} onChange={(event) => setService(event.target.value)}><option value="" disabled>Selecciona una ruta</option><option>Sound Sprint</option><option>Grammar Journey</option><option>Sound Sprint y Grammar Journey</option></select></label>}
     </div>
     <label>¿Qué quieres transformar?<textarea minLength={10} name="message" placeholder="Cuéntanos qué quieres aprender, construir o desbloquear." required rows={5} /></label>
     <div className="lti-contact-actions">

@@ -7,7 +7,11 @@ import type { PhilosophyVolume } from "@/lib/philosophy-library";
 type BookPage = { volumeId: string; volumeNumber: string; volumeTitle: string; title: string; content: string };
 
 function cleanHeading(line: string) {
-  return line.replace(/^#{1,6}\s*/, "").replace(/\*\*/g, "").trim();
+  return line.replace(/#/g, "").replace(/\*\*/g, "").trim();
+}
+
+function headingLevel(line: string) {
+  return (line.match(/^#+/)?.[0].length ?? 1);
 }
 
 function buildPages(volumes: PhilosophyVolume[]): BookPage[] {
@@ -36,13 +40,28 @@ function MarkdownPage({ content }: { content: string }) {
     {content.split(/\n{2,}/).map((block, index) => {
       const text = block.trim();
       if (!text || text === "---") return null;
+      const lines = text.split("\n").filter(Boolean);
+      const isHeadingStack = lines.length > 1 && lines.every((line) => /^#{1,6}\s+/.test(line));
+      if (isHeadingStack) {
+        const isVolumeCover = lines.some((line) => /VOLUMEN\s+[IVX]+/i.test(cleanHeading(line)));
+        return <header className={isVolumeCover ? "philosophy-volume-cover" : "philosophy-heading-stack"} key={index}>
+          {lines.map((line, lineIndex) => {
+            const title = cleanHeading(line);
+            if (isVolumeCover && /BRAND BIBLE/i.test(title)) return <p className="philosophy-cover-brand" key={line}>{title}</p>;
+            if (isVolumeCover && /VOLUMEN\s+[IVX]+/i.test(title)) return <p className="philosophy-cover-volume" key={line}>{title}</p>;
+            if (isVolumeCover && headingLevel(line) >= 2) return <p className="philosophy-cover-subtitle" key={line}>{title}</p>;
+            const Heading = headingLevel(line) === 1 ? "h2" : headingLevel(line) === 2 ? "h3" : "h4";
+            return <Heading key={lineIndex}>{title}</Heading>;
+          })}
+        </header>;
+      }
       if (/^###\s+/.test(text)) return <h4 key={index}>{cleanHeading(text)}</h4>;
       if (/^##\s+/.test(text)) return <h3 key={index}>{cleanHeading(text)}</h3>;
       if (/^#\s+/.test(text)) return <h2 key={index}>{cleanHeading(text)}</h2>;
-      if (text.startsWith(">")) return <blockquote key={index}>{text.replace(/^>\s?/gm, "")}</blockquote>;
-      if (/^(?:[-*]|\d+\.)\s/m.test(text)) return <ul key={index}>{text.split("\n").filter(Boolean).map((line) => <li key={line}>{line.replace(/^(?:[-*]|\d+\.)\s+/, "")}</li>)}</ul>;
-      if (text.startsWith("|")) return <pre key={index}>{text}</pre>;
-      return <p key={index}>{text.replace(/\*\*/g, "")}</p>;
+      if (text.startsWith(">")) return <blockquote key={index}>{cleanHeading(text.replace(/^>\s?/gm, ""))}</blockquote>;
+      if (/^(?:[-*]|\d+\.)\s/m.test(text)) return <ul key={index}>{text.split("\n").filter(Boolean).map((line) => <li key={line}>{cleanHeading(line.replace(/^(?:[-*]|\d+\.)\s+/, ""))}</li>)}</ul>;
+      if (text.startsWith("|")) return <pre key={index}>{text.replace(/#/g, "")}</pre>;
+      return <p key={index}>{cleanHeading(text)}</p>;
     })}
   </div>;
 }
@@ -105,5 +124,6 @@ export function PhilosophyFlipbook({ volumes }: { volumes: PhilosophyVolume[] })
         <div aria-label={`${progress}% de lectura`} className="philosophy-progress"><i style={{ width: `${progress}%` }} /></div>
       </div>
     </section>
+    <footer className="philosophy-reader-footer"><p>© LANCELOT. Desde el ser para el saber.</p></footer>
   </main>;
 }

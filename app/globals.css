@@ -4093,3 +4093,41 @@ h1 {
   .philosophy-cover-brand { margin-bottom: 20px !important; }
   .philosophy-cover-volume { margin-bottom: 22px !important; }
 }
+
+.philosophy-table-scroll {
+  border: 1px solid rgba(144, 102, 41, .38);
+  margin: 26px 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.philosophy-table {
+  border-collapse: collapse;
+  font: .78rem/1.48 Inter, Arial, sans-serif;
+  min-width: 680px;
+  width: 100%;
+}
+
+.philosophy-table th,
+.philosophy-table td {
+  border-bottom: 1px solid rgba(144, 102, 41, .24);
+  border-right: 1px solid rgba(144, 102, 41, .2);
+  padding: 13px 14px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.philosophy-table th:last-child,
+.philosophy-table td:last-child { border-right: 0; }
+.philosophy-table tbody tr:last-child td { border-bottom: 0; }
+.philosophy-table th { background: #18334b; color: #fff4dc; font-size: .66rem; letter-spacing: .07em; text-transform: uppercase; }
+.philosophy-table td { background: rgba(255, 253, 248, .7); color: #363932; }
+.philosophy-table tbody tr:nth-child(even) td { background: #f2eadb; }
+.philosophy-table tbody tr:hover td { background: #e7d5ae; color: #191a17; }
+
+@media (max-width: 620px) {
+  .philosophy-table-scroll { margin-left: -2px; margin-right: -2px; }
+  .philosophy-table { font-size: .74rem; }
+  .philosophy-table th,
+  .philosophy-table td { padding: 11px 12px; }
+}

@@ -14,6 +14,27 @@ function headingLevel(line: string) {
   return (line.match(/^#+/)?.[0].length ?? 1);
 }
 
+function parseTableRow(line: string) {
+  return line.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((cell) => cleanHeading(cell));
+}
+
+function isTableDivider(line: string) {
+  return /^\|?\s*:?-{3,}:?\s*(?:\|\s*:?-{3,}:?\s*)+\|?$/.test(line.trim());
+}
+
+function MarkdownTable({ content }: { content: string }) {
+  const lines = content.split("\n").filter(Boolean);
+  const headers = parseTableRow(lines[0]);
+  const rows = lines.slice(2).filter((line) => line.trim().startsWith("|")).map(parseTableRow);
+
+  return <div className="philosophy-table-scroll">
+    <table className="philosophy-table">
+      <thead><tr>{headers.map((header, index) => <th key={`${header}-${index}`} scope="col">{header}</th>)}</tr></thead>
+      <tbody>{rows.map((row, rowIndex) => <tr key={`${rowIndex}-${row.join("-")}`}>{headers.map((_, cellIndex) => <td key={`${rowIndex}-${cellIndex}`}>{row[cellIndex] ?? ""}</td>)}</tr>)}</tbody>
+    </table>
+  </div>;
+}
+
 function buildPages(volumes: PhilosophyVolume[]): BookPage[] {
   return volumes.flatMap((volume) => {
     const sections = volume.content
@@ -60,7 +81,7 @@ function MarkdownPage({ content }: { content: string }) {
       if (/^#\s+/.test(text)) return <h2 key={index}>{cleanHeading(text)}</h2>;
       if (text.startsWith(">")) return <blockquote key={index}>{cleanHeading(text.replace(/^>\s?/gm, ""))}</blockquote>;
       if (/^(?:[-*]|\d+\.)\s/m.test(text)) return <ul key={index}>{text.split("\n").filter(Boolean).map((line) => <li key={line}>{cleanHeading(line.replace(/^(?:[-*]|\d+\.)\s+/, ""))}</li>)}</ul>;
-      if (text.startsWith("|")) return <pre key={index}>{text.replace(/#/g, "")}</pre>;
+      if (text.startsWith("|") && isTableDivider(text.split("\n")[1] ?? "")) return <MarkdownTable content={text} key={index} />;
       return <p key={index}>{cleanHeading(text)}</p>;
     })}
   </div>;

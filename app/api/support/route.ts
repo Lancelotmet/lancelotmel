@@ -9,18 +9,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Invalid support ticket." }, { status: 400 });
   }
 
-  if (!useMarketplaceDemoMode() && hasSupabaseAdminConfig()) {
-    const supabase = createSupabaseServerClient();
-    const { error } = await supabase.from("support_tickets").insert({
-      booking_id: parsed.data.bookingId,
-      message: parsed.data.message,
-      order_id: parsed.data.orderId,
-      product_id: parsed.data.productId,
-      subject: parsed.data.subject
-    });
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-
   try {
     await sendLancelotFormNotification({
       source: "Formulario de contacto web",
@@ -37,6 +25,23 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Unable to notify the Lancelot contact mailbox", error);
     return NextResponse.json({ error: "No fue posible enviar tu mensaje. Inténtalo nuevamente." }, { status: 502 });
+  }
+
+  if (!useMarketplaceDemoMode() && hasSupabaseAdminConfig()) {
+    try {
+      const supabase = createSupabaseServerClient();
+      const { error } = await supabase.from("support_tickets").insert({
+        booking_id: parsed.data.bookingId,
+        message: parsed.data.message,
+        order_id: parsed.data.orderId,
+        product_id: parsed.data.productId,
+        subject: parsed.data.subject
+      });
+      if (error) console.error("Unable to archive the contact ticket in Supabase", error);
+    } catch (error) {
+      // Email delivery is the contact form's primary commitment. Do not reject a valid message if archival is unavailable.
+      console.error("Unable to archive the contact ticket in Supabase", error);
+    }
   }
 
   return NextResponse.json({ ok: true, message: "Mensaje recibido." });

@@ -4,7 +4,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "LANCELOT | Infraestructura de Transformación del Aprendizaje",
-  description: "LANCELOT integra IA educativa, metacognición y ciencias del aprendizaje para convertir conocimiento en autonomía, criterio y transformación humana."
+  description: "LANCELOT integra IA educativa, metacognición y ciencias del aprendizaje para convertir conocimiento en autonomía, criterio y transformación humana.",
+  icons: {
+    icon: "/icon",
+    apple: "/icon"
+  }
 };
 
 export default function RootLayout({

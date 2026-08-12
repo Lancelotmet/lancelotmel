@@ -10,6 +10,7 @@ import {
   isSupportedService
 } from "@/lib/appointments";
 import { createCalendarEvent } from "@/lib/google-calendar";
+import { sendLancelotFormNotification } from "@/lib/resend";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 function badRequest(message: string) {
@@ -109,6 +110,24 @@ export async function POST(request: NextRequest) {
 
   if (insertError) {
     return NextResponse.json({ error: insertError.message }, { status: 500 });
+  }
+
+  try {
+    await sendLancelotFormNotification({
+      source: "Inscripción de cita",
+      subject: `Nueva inscripción: ${insertPayload.service}`,
+      replyTo: insertPayload.email,
+      fields: [
+        ["Nombre", insertPayload.name],
+        ["Correo de respuesta", insertPayload.email],
+        ["Teléfono", insertPayload.phone],
+        ["Servicio", insertPayload.service],
+        ["Inicio", startsAt.toLocaleString("es-CO", { dateStyle: "full", timeStyle: "short", timeZone: "America/Bogota" })],
+        ["Notas", insertPayload.notes]
+      ]
+    });
+  } catch (error) {
+    console.error("Unable to notify the Lancelot contact mailbox", error);
   }
 
   let calendarMessage = "Reserva guardada. Configura Google Calendar para enviar invitaciones automaticas.";

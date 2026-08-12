@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseServerClient, hasSupabaseAdminConfig, useMarketplaceDemoMode } from "@/lib/supabase/server";
 import { supportTicketSchema } from "@/lib/marketplace/validators";
+import { sendLancelotFormNotification } from "@/lib/resend";
 
 export async function POST(request: NextRequest) {
   const parsed = supportTicketSchema.safeParse(await request.json());
@@ -20,5 +21,23 @@ export async function POST(request: NextRequest) {
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ ok: true, message: "Support request received." });
+  try {
+    await sendLancelotFormNotification({
+      source: "Formulario de contacto web",
+      subject: parsed.data.subject,
+      replyTo: parsed.data.email,
+      fields: [
+        ["Correo de respuesta", parsed.data.email],
+        ["Mensaje", parsed.data.message],
+        ["Pedido", parsed.data.orderId],
+        ["Producto", parsed.data.productId],
+        ["Reserva", parsed.data.bookingId]
+      ]
+    });
+  } catch (error) {
+    console.error("Unable to notify the Lancelot contact mailbox", error);
+    return NextResponse.json({ error: "No fue posible enviar tu mensaje. Inténtalo nuevamente." }, { status: 502 });
+  }
+
+  return NextResponse.json({ ok: true, message: "Mensaje recibido." });
 }

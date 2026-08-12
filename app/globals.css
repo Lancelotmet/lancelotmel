@@ -4128,6 +4128,24 @@ h1 {
 @media (max-width: 620px) {
   .philosophy-table-scroll { margin-left: -2px; margin-right: -2px; }
   .philosophy-table { font-size: .74rem; }
-  .philosophy-table th,
-  .philosophy-table td { padding: 11px 12px; }
+.philosophy-table th,
+.philosophy-table td { padding: 11px 12px; }
 }
+
+/* Access state for non-public philosophy volumes. */
+.philosophy-toc-lock {
+  align-items: flex-start;
+  border-bottom: 1px solid rgba(198, 158, 94, .2);
+  color: #777f7e;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 24px 1fr;
+  padding: 16px 4px;
+}
+.philosophy-toc-lock:last-of-type { border-bottom: 0; }
+.philosophy-toc-lock b { color: #8c7650; font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 500; line-height: .8; }
+.philosophy-toc-lock strong { color: #bab4a9; display: block; font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; line-height: 1; }
+.philosophy-toc-lock small { color: #7f8987; display: block; font-size: .7rem; line-height: 1.35; margin-top: 5px; }
+.philosophy-toc-lock em { color: #d9ae57; display: block; font-size: .58rem; font-style: normal; font-weight: 700; letter-spacing: .11em; margin-top: 9px; text-transform: uppercase; }
+.philosophy-toc-lock i { color: #9ba7a6; display: block; font-size: .68rem; font-style: normal; line-height: 1.35; margin-top: 5px; }
+.philosophy-toc-lock a { color: #e5bd68; display: inline-block; font-size: .66rem; font-weight: 700; letter-spacing: .08em; margin-top: 7px; text-decoration: underline; text-underline-offset: 3px; text-transform: uppercase; }

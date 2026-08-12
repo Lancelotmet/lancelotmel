@@ -37,6 +37,7 @@ function MarkdownTable({ content }: { content: string }) {
 
 function buildPages(volumes: PhilosophyVolume[]): BookPage[] {
   return volumes.flatMap((volume) => {
+    if (!volume.content) return [];
     const sections = volume.content
       .trim()
       .split(/(?=^#{1,2}\s*(?:CAP[IÍ]TULO|Cap[ií]tulo|Pr[oó]logo|Ep[ií]logo))/m)
@@ -87,7 +88,7 @@ function MarkdownPage({ content }: { content: string }) {
   </div>;
 }
 
-export function PhilosophyFlipbook({ volumes }: { volumes: PhilosophyVolume[] }) {
+export function PhilosophyFlipbook({ isSignedIn, volumes }: { isSignedIn: boolean; volumes: PhilosophyVolume[] }) {
   const pages = useMemo(() => buildPages(volumes), [volumes]);
   const [pageIndex, setPageIndex] = useState(0);
   const page = pages[pageIndex];
@@ -130,7 +131,16 @@ export function PhilosophyFlipbook({ volumes }: { volumes: PhilosophyVolume[] })
     <section className="philosophy-library" aria-label="Biblioteca Lancelot">
       <aside className="philosophy-toc">
         <p>Índice de volúmenes</p>
-        {volumes.map((volume) => <button className={volume.id === currentVolume.id ? "active" : ""} key={volume.id} onClick={() => selectVolume(volume.id)} type="button"><b>{volume.number}</b><span><strong>{volume.title}</strong><small>{volume.subtitle}</small></span></button>)}
+        {volumes.map((volume) => {
+          const locked = volume.restricted && !volume.content;
+          if (locked) {
+            return <div className="philosophy-toc-lock" key={volume.id}>
+              <b>{volume.number}</b>
+              <span><strong>{volume.title}</strong><small>{volume.subtitle}</small><em>Acceso reservado</em>{isSignedIn ? <i>Tu cuenta requiere autorización.</i> : <Link href="/login?next=/filosofia">Inicia sesión</Link>}</span>
+            </div>;
+          }
+          return <button className={volume.id === currentVolume.id ? "active" : ""} key={volume.id} onClick={() => selectVolume(volume.id)} type="button"><b>{volume.number}</b><span><strong>{volume.title}</strong><small>{volume.subtitle}</small></span></button>;
+        })}
         <div className="philosophy-toc-note"><strong>Cómo leer</strong><span>Usa las flechas del libro o las teclas ← y → para avanzar.</span></div>
       </aside>
 

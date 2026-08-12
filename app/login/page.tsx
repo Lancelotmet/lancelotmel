@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { LoginClient } from "@/components/marketplace/LoginClient";
 
 export default function LoginPage() {
@@ -8,7 +9,9 @@ export default function LoginPage() {
         <h1>Access your LANCELOT library and bookings.</h1>
         <p className="lead">Supabase Auth powers registration, login and sessions. Demo checkout can also run with email-only access in development.</p>
       </section>
-      <LoginClient />
+      <Suspense fallback={<p className="status info">Cargando acceso…</p>}>
+        <LoginClient />
+      </Suspense>
     </main>
   );
 }

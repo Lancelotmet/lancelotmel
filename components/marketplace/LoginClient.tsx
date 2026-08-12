@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 
 export function LoginClient() {
@@ -8,6 +9,8 @@ export function LoginClient() {
   const [password, setPassword] = useState("");
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [status, setStatus] = useState<string | null>(null);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   async function submit() {
     setStatus(null);
@@ -23,6 +26,14 @@ export function LoginClient() {
         return;
       }
 
+      if (mode === "login") {
+        const next = searchParams.get("next");
+        if (next?.startsWith("/")) {
+          router.push(next);
+          router.refresh();
+          return;
+        }
+      }
       setStatus(mode === "login" ? "Logged in. You can open My Library." : "Account created. Check your email if confirmation is enabled.");
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Supabase Auth is not configured.");

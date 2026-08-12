@@ -200,7 +200,8 @@ function ContactForm() {
       setService("");
       setStatus("Gracias. Recibimos tu mensaje y pronto nos pondremos en contacto contigo.");
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : "No fue posible enviar tu mensaje. Inténtalo de nuevo.");
+      console.error("No fue posible enviar el formulario de contacto", error);
+      setStatus("No fue posible enviar tu mensaje. Inténtalo de nuevo o escríbenos a centro@lancelotmet.com.");
     } finally {
       setIsSubmitting(false);
     }

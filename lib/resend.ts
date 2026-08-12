@@ -10,7 +10,7 @@ type FormNotification = {
 };
 
 function getResend() {
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = process.env.RESEND_API_KEY?.trim();
   if (!apiKey) throw new Error("RESEND_API_KEY is not configured.");
   return new Resend(apiKey);
 }
@@ -32,17 +32,33 @@ export async function sendLancelotFormNotification({ source, subject, replyTo, f
     <h1>${escapeHtml(source)}</h1>
     <table>${normalizedFields.map(([label, value]) => `<tr><th align="left">${escapeHtml(label)}</th><td>${escapeHtml(value?.trim() ?? "")}</td></tr>`).join("")}</table>
   `;
-  const result = await getResend().emails.send({
+  const email = {
     from: process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev",
     to: CONTACT_RECIPIENT,
     replyTo,
     subject,
     text,
     html
-  });
+  };
+  const idempotencyKey = `lancelot-form/${crypto.randomUUID()}`;
+  const send = () => getResend().emails.send(email, { idempotencyKey });
 
-  if (result.error) throw new Error(result.error.message);
-  return result.data;
+  try {
+    const result = await send();
+    if (result.error) throw new Error(result.error.message);
+    return result.data;
+  } catch (error) {
+    // A brief connection interruption must not drop a form submission or create a duplicate email.
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    try {
+      const result = await send();
+      if (result.error) throw new Error(result.error.message);
+      return result.data;
+    } catch (retryError) {
+      console.error("Resend request failed after retry", { cause: error, retryCause: retryError });
+      throw new Error("No se pudo conectar con el servicio de correo.");
+    }
+  }
 }
 
 export function sendLancelotTestEmail() {

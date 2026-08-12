@@ -184,11 +184,15 @@ function ContactForm() {
     setIsSubmitting(true);
     setStatus("");
     try {
-      const response = await fetch("/api/support", {
+      const response = await fetch("/api/contact", {
         body: JSON.stringify({
+          name,
           email,
-          subject: `Contacto web — ${selectedPortfolio}${selectedService ? `: ${selectedService}` : ""}`,
-          message: `Nombre: ${name}\nCorreo: ${email}\nTeléfono: ${phone || "No informado"}\nOcupación: ${occupation || "No informada"}\nPortafolio: ${selectedPortfolio}\n${selectedService ? `${selectedPortfolio === "Idiomas" ? "Ruta de idiomas" : "Servicio"}: ${selectedService}\n` : ""}\n${message}`
+          phone,
+          occupation,
+          portfolio: selectedPortfolio,
+          service: selectedService,
+          message
         }),
         headers: { "Content-Type": "application/json" },
         method: "POST"

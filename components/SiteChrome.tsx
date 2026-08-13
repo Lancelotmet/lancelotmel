@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 
 export function SiteChrome({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  if (pathname === "/" || pathname === "/sound-sprint" || pathname === "/orientacion" || pathname === "/filosofia" || pathname === "/idiomas" || pathname === "/login" || pathname === "/portal") return children;
+  if (pathname === "/" || pathname === "/sound-sprint" || pathname === "/orientacion" || pathname === "/filosofia" || pathname === "/idiomas" || pathname === "/login" || pathname === "/portal" || pathname.startsWith("/portal/")) return children;
 
   return <>
     <header className="topbar market-topbar lancelot-market-chrome"><div className="shell topbar-inner"><Link className="brand lancelot-market-brand" href="/"><LancelotCrownMark /><span className="lancelot-market-lockup"><strong>LANCELOT</strong><small>Desde el ser para el saber</small></span></Link><nav className="nav" aria-label="Navegación principal"><Link href="/">Inicio</Link><Link href="/login?next=/portal">Portal</Link><Link href="/citas">Agenda</Link><Link className="lancelot-market-enter" href="/login?next=/portal">Ingresar <span aria-hidden="true">→</span></Link></nav></div></header>

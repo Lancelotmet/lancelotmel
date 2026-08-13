@@ -1,14 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { FINAL_IDS, RULE_ORDER, RULES, RuleId, verbById, VerbItem, verbsForRule } from "@/lib/spelling-lab/content";
 import { AttemptRecord, diagnosticRoute, emptySkill, finalWeakRules, globalMastery, initialSkills, isCorrectPast, normalizeAnswer, scoreAttempt, SkillState } from "@/lib/spelling-lab/engine";
+import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 
 const STORAGE_KEY = "lancelot-ed-spelling-v1";
+const PROGRESS_METADATA_KEY = "lancelot_spelling_lab_v1";
 type Screen = "intro" | "diagnostic" | "unit" | "final" | "complete";
 type Stage = "attempt" | "observe" | "compare" | "discover" | "rule" | "apply" | "transfer" | "model";
 type Session = { name: string; screen: Screen; diagnosticIndex: number; route: RuleId[]; unitIndex: number; stage: Stage; applyIndex: number; currentVerbId: string; errors: number; skills: Record<RuleId, SkillState>; history: AttemptRecord[]; finalIndex: number; finalCorrect: number; finalExplanations: number; usedHints: number; startedAt: number };
+type ProgressSaveState = "saving" | "saved" | "local";
 
 const diagnostic = ["work", "live", "study", "play", "stop", "fix", "plan", "wash"];
 const labels: Record<RuleId, string> = { general_ed: "ADD -ED", final_e: "ADD -D", consonant_y: "CHANGE Y TO I + ED", vowel_y: "KEEP Y + ED", cvc_double: "DOUBLE FINAL CONSONANT + ED", do_not_double: "ADD -ED (NO DOUBLE)" };
@@ -29,21 +32,45 @@ function commonWrong(verb: VerbItem) {
   return `${verb.base}d`;
 }
 
-export function SpellingLab() {
+function isSession(value: unknown): value is Session {
+  if (!value || typeof value !== "object") return false;
+  const candidate = value as Partial<Session>;
+  return typeof candidate.screen === "string" && typeof candidate.currentVerbId === "string" && Array.isArray(candidate.route) && Boolean(candidate.skills) && Array.isArray(candidate.history);
+}
+
+export function SpellingLab({ learnerName, learnerEmail, savedProgress }: { learnerName: string; learnerEmail: string; savedProgress: unknown }) {
   const [session, setSession] = useState<Session>(newSession);
   const [loaded, setLoaded] = useState(false);
   const [answer, setAnswer] = useState("");
   const [feedback, setFeedback] = useState("");
   const [resetOpen, setResetOpen] = useState(false);
+  const [saveState, setSaveState] = useState<ProgressSaveState>("saving");
+  const cloudProgress = useRef(savedProgress);
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      try { setSession(JSON.parse(stored) as Session); } catch { window.localStorage.removeItem(STORAGE_KEY); }
-    }
+    const remote = cloudProgress.current;
+    if (isSession(remote)) setSession(remote);
+    else if (stored) {
+      try { const local = JSON.parse(stored); if (isSession(local)) setSession(local); else window.localStorage.removeItem(STORAGE_KEY); } catch { window.localStorage.removeItem(STORAGE_KEY); }
+    } else setSession((current) => ({ ...current, name: learnerName }));
     setLoaded(true);
   }, []);
-  useEffect(() => { if (loaded) window.localStorage.setItem(STORAGE_KEY, JSON.stringify(session)); }, [loaded, session]);
+  useEffect(() => {
+    if (!loaded) return;
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
+    setSaveState("saving");
+    const timer = window.setTimeout(async () => {
+      try {
+        const { error } = await createSupabaseBrowserClient().auth.updateUser({ data: { [PROGRESS_METADATA_KEY]: session } });
+        if (error) throw error;
+        setSaveState("saved");
+      } catch {
+        setSaveState("local");
+      }
+    }, 650);
+    return () => window.clearTimeout(timer);
+  }, [loaded, session]);
   useEffect(() => { setAnswer(""); setFeedback(""); }, [session.currentVerbId, session.stage, session.finalIndex]);
 
   const activeRule = session.route[session.unitIndex] || "general_ed";
@@ -58,6 +85,10 @@ export function SpellingLab() {
   }
 
   function beginDiagnostic() { setSession((current) => ({ ...current, screen: "diagnostic", currentVerbId: diagnostic[0], stage: "attempt" })); }
+
+  async function signOut() {
+    try { await createSupabaseBrowserClient().auth.signOut(); } finally { window.location.assign("/"); }
+  }
 
   function submitDiagnostic(event: FormEvent) {
     event.preventDefault();
@@ -134,14 +165,14 @@ export function SpellingLab() {
 
   if (!loaded) return <main className="spelling-lab"><p className="lab-loading">Abriendo la edición…</p></main>;
   return <main className="spelling-lab">
-    <header className="lab-nav"><Link href="/portal" className="lab-return">← Catálogo</Link><div className="lab-brand"><BrandCrown /><strong>LANCELOT</strong><small>THE SMALL TRIP · SPELLING</small></div><button onClick={() => setResetOpen(true)} type="button">Reiniciar edición</button></header>
+    <header className="lab-nav"><Link href="/portal" className="lab-return">← Catálogo</Link><div className="lab-brand"><BrandCrown /><strong>LANCELOT</strong><small>THE SMALL TRIP · SPELLING</small></div><div className="lab-account"><span title={learnerEmail}><b>{learnerName}</b><small>{saveState === "saving" ? "Guardando progreso…" : saveState === "saved" ? "Progreso guardado" : "Guardado en este dispositivo"}</small></span><button className="lab-signout" onClick={signOut} type="button">Salir</button><button className="lab-reset" onClick={() => setResetOpen(true)} type="button">Reiniciar edición</button></div></header>
     <div className="lab-progress" aria-label={`Progreso ${Math.round(progress)}%`}><span style={{ width: `${Math.max(4, progress)}%` }} /></div>
     {session.screen !== "intro" && <div className="lab-edition-strip" aria-hidden="true"><span>THE SMALL TRIP</span><b>ISSUE 01</b><span>SPELLING STUDIO</span></div>}
     {session.screen === "intro" && <Intro name={session.name} onName={(name) => setSession((current) => ({ ...current, name }))} onBegin={beginDiagnostic} />}
     {session.screen === "diagnostic" && <Diagnostic verb={verbById(diagnostic[session.diagnosticIndex])} index={session.diagnosticIndex} answer={answer} onAnswer={setAnswer} onSubmit={submitDiagnostic} />}
     {session.screen === "unit" && <Unit rule={activeRule} verb={activeVerb} stage={session.stage} errors={session.errors} answer={answer} feedback={feedback} onAnswer={setAnswer} onSubmit={submitSpelling} onHypothesis={chooseHypothesis} onNext={(stage) => setSession((current) => ({ ...current, stage }))} onModel={continueModel} />}
     {session.screen === "final" && <FinalChallenge task={finalTasks()[session.finalIndex]} index={session.finalIndex} total={finalTasks().length} onAnswer={submitFinal} feedback={feedback} />}
-    {session.screen === "complete" && <Completion session={session} onWeak={() => { const weak = finalWeakRules(session.skills); const rule = weak[0] || "cvc_double"; setSession((current) => ({ ...current, screen: "unit", route: weak.length ? weak : [rule], unitIndex: 0, stage: "attempt", currentVerbId: firstVerb(rule).id, applyIndex: 0, errors: 0 })); }} onFinal={() => setSession((current) => ({ ...current, screen: "final", finalIndex: 0, finalCorrect: 0, finalExplanations: 0 }))} onNew={() => setSession(newSession())} />}
+    {session.screen === "complete" && <Completion session={session} onWeak={() => { const weak = finalWeakRules(session.skills); const rule = weak[0] || "cvc_double"; setSession((current) => ({ ...current, screen: "unit", route: weak.length ? weak : [rule], unitIndex: 0, stage: "attempt", currentVerbId: firstVerb(rule).id, applyIndex: 0, errors: 0 })); }} onFinal={() => setSession((current) => ({ ...current, screen: "final", finalIndex: 0, finalCorrect: 0, finalExplanations: 0 }))} onNew={() => setSession((current) => ({ ...newSession(), name: learnerName }))} />}
     {feedback && <p className="lab-feedback" aria-live="polite">{feedback}</p>}
     {resetOpen && <div className="lab-modal" role="dialog" aria-modal="true" aria-label="Reiniciar edición"><div><p className="lab-kicker">Confirmación</p><h2>¿Reiniciar esta edición?</h2><p>Se eliminará únicamente el progreso de Spelling Lab guardado en este navegador.</p><div><button onClick={() => setResetOpen(false)} type="button">Conservar mi progreso</button><button className="lab-solid" onClick={() => { window.localStorage.removeItem(STORAGE_KEY); setSession(newSession()); setResetOpen(false); }} type="button">Sí, reiniciar</button></div></div></div>}
   </main>;

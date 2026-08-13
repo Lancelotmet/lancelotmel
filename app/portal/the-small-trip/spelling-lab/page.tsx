@@ -13,8 +13,10 @@ export default async function SpellingLabPage() {
   try {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) redirect("/login?next=/portal/the-small-trip/spelling-lab");
+    const learnerName = String(user.user_metadata?.full_name || user.email?.split("@")[0] || "Aprendiz");
+    const savedProgress = user.user_metadata?.lancelot_spelling_lab_v1 ?? null;
+    return <SpellingLab learnerName={learnerName} learnerEmail={user.email || ""} savedProgress={savedProgress} />;
   } catch {
     redirect("/login?next=/portal/the-small-trip/spelling-lab");
   }
-  return <SpellingLab />;
 }

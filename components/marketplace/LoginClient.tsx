@@ -32,7 +32,7 @@ export function LoginClient() {
         router.refresh();
         return;
       }
-      setStatus(mode === "login" ? "Acceso confirmado. Ya puedes entrar al portal." : "Cuenta creada. Revisa tu correo si la confirmación está activada.");
+      setStatus("Cuenta creada. Revisa tu correo si la confirmación está activada.");
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "El acceso no está configurado en este momento.");
     }

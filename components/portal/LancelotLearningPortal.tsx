@@ -157,6 +157,12 @@ export function LancelotLearningPortal({ learnerName, learnerEmail }: PortalProp
               </button>
             ))}
           </div>
+          {activeBlock.id === "a2-trip" && area === "spelling" ? (
+            <Link className="portal-featured-edition" href="/portal/the-small-trip/spelling-lab">
+              <div><span>Edición interactiva · 01</span><strong>Spelling Lab:<br />Regular Past <em>-ed</em></strong><p>Una experiencia adaptativa para narrar lo que pasó durante el viaje.</p></div>
+              <b>Entrar a la edición <i>→</i></b>
+            </Link>
+          ) : null}
           <article className="portal-practice-stage">
             <div className="portal-stage-index">{activeArea.symbol}</div>
             <div>

@@ -252,7 +252,8 @@ export function MethodologyHomePage() {
           <Link href="#empresas" onClick={close}>Empresas</Link>
           <Link href="#manifiesto" onClick={close}>Manifiesto</Link>
           <Link href="/filosofia" onClick={close}>Filosofía</Link>
-          <ButtonPrimary href="#contacto">Conocer</ButtonPrimary>
+          <Link href="/login?next=/portal" onClick={close}>Portal</Link>
+          <ButtonPrimary href="/login?next=/portal">Ingresar</ButtonPrimary>
         </div>
       </div>
     </nav>
@@ -266,7 +267,7 @@ export function MethodologyHomePage() {
           <p className="hero-lead">Aprender no es llenarse de información. Es descubrir capacidades, construir autonomía y transformar la relación con el conocimiento.</p>
           <div className="home-actions">
             <ButtonPrimary href="#contacto">Conocer</ButtonPrimary>
-            <ButtonSecondary href="#metodologia">Metodología</ButtonSecondary>
+            <ButtonSecondary href="/login?next=/portal">Entrar al portal</ButtonSecondary>
           </div>
           <dl className="lti-proof-row" aria-label="Principios centrales">
             <div><dt>01</dt><dd>Metacognición activa</dd></div>
@@ -428,6 +429,18 @@ export function MethodologyHomePage() {
       </div>
     </section>
 
+    <section className="lti-portal-invite" id="portal">
+      <div className="home-shell lti-portal-invite-grid reveal">
+        <div className="lti-portal-emblem" aria-hidden="true"><span>A1</span><span>A2</span><span>B1</span><span>B2</span></div>
+        <div>
+          <p className="home-kicker">Portal de idiomas Lancelot</p>
+          <h2>El inglés no se recorre en fila. Se encuentra en contextos que te importan.</h2>
+          <p>Elige tu nivel, entra al bloque que te llame y practica Vocabulary, Spelling, Grammar, Listening o Speaking con libertad. Cuando necesites compañía, agenda una clase de refuerzo para esa misma escena.</p>
+        </div>
+        <Link className="home-button home-button-primary" href="/login?next=/portal">Entrar al portal <b aria-hidden="true">→</b></Link>
+      </div>
+    </section>
+
     <section className="lti-contact" id="contacto">
       <div className="home-shell lti-contact-layout reveal">
         <div className="lti-contact-copy">
@@ -453,6 +466,7 @@ export function MethodologyHomePage() {
           <Link href="#empresas">Empresas</Link>
           <Link href="#manifiesto">Manifiesto</Link>
           <Link href="/filosofia">Filosofía</Link>
+          <Link href="/login?next=/portal">Portal</Link>
         </nav>
         <p>© 2026 LANCELOT. Todos los derechos reservados.</p>
       </div>

@@ -27,6 +27,8 @@ export default function BookingForm() {
     : "Cita";
   const [encounterType, setEncounterType] = useState<(typeof ENCOUNTER_TYPES)[number]>(initialType);
   const [service, setService] = useState("");
+  const requestedContext = searchParams.get("context")?.trim() || "";
+  const [notes, setNotes] = useState("");
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [state, setState] = useState<SubmitState>({ type: "idle", message: "" });
@@ -75,6 +77,12 @@ export default function BookingForm() {
     setService(requestedService && supportedServices.includes(requestedService) ? requestedService : supportedServices[0]);
   }, [encounterType, searchParams]);
 
+  useEffect(() => {
+    if (requestedContext) {
+      setNotes(`Quiero una clase de refuerzo para el bloque de idiomas: ${requestedContext}.`);
+    }
+  }, [requestedContext]);
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const bookingForm = event.currentTarget;
@@ -89,7 +97,7 @@ export default function BookingForm() {
       encounterType: String(form.get("encounterType") || ""),
       service,
       startsAt: selectedSlot,
-      notes: String(form.get("notes") || "")
+      notes
     };
 
     try {
@@ -112,6 +120,7 @@ export default function BookingForm() {
 
       setState({ type: "ok", message: data.message || "Reserva confirmada." });
       bookingForm.reset();
+      setNotes(requestedContext ? `Quiero una clase de refuerzo para el bloque de idiomas: ${requestedContext}.` : "");
       setSelectedSlot("");
       const availability = await fetch(`/api/availability?date=${date}`);
       const availabilityData = (await availability.json()) as { slots?: AvailableSlot[] };
@@ -202,7 +211,7 @@ export default function BookingForm() {
       </div>
       <div className="field">
         <label htmlFor="notes">Notas</label>
-        <textarea id="notes" name="notes" placeholder="Motivo de consulta o detalle adicional" />
+        <textarea id="notes" name="notes" onChange={(event) => setNotes(event.target.value)} placeholder="Motivo de consulta o detalle adicional" value={notes} />
       </div>
       {state.type !== "idle" ? <p className={`status ${state.type}`}>{state.message}</p> : null}
       <button className="button" disabled={!selectedSlot || submitting} type="submit">

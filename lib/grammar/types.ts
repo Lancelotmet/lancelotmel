@@ -119,6 +119,29 @@ export type GrammarProgress = {
   version: 1;
   capsules: Record<string, CapsuleProgress>;
   skills: Record<string, SkillProgress>;
+  archiveGames?: Record<string, ArchiveGameProgress>;
   lastCapsuleId?: string;
   updatedAt?: string;
+};
+
+export type ArchiveMissionProgress = {
+  attempts: number;
+  hintsUsed: number;
+  assisted: boolean;
+  completed: boolean;
+  selectedDistractors: string[];
+  completedAt?: string;
+};
+
+export type ArchiveGameProgress = {
+  capsuleId: string;
+  status: "not-started" | "in-progress" | "completed" | "mastered" | "completed-assisted";
+  startedAt?: string;
+  completedAt?: string;
+  currentMission: number;
+  missions: Record<string, ArchiveMissionProgress>;
+  transferIndependent: boolean;
+  repeats: number;
+  bestScore?: number;
+  lastPlayedAt?: string;
 };

@@ -84,10 +84,26 @@ function makeInteractions(skill: GrammarSkill, capsuleId: string, variant: typeo
   });
 }
 
-export const GRAMMAR_CAPSULES: GrammarCapsule[] = GRAMMAR_SKILLS.flatMap((skill) => VARIANTS.map((variant, index) => {
+export const ARCHIVE_BEFORE_MIDNIGHT_SKILL: GrammarSkill = skill({
+  id: "b1-past-perfect-archive", level: "B1", blockId: "a-change-of-plan", blockTitle: "Historias bajo presión", title: "Past Perfect: reconstruir una secuencia", learningObjective: "Distinguir dos hechos pasados y marcar con had + past participle el que ocurrió primero, manteniendo el posterior en Past Simple.", prerequisiteIds: ["a2-past-simple"], chapter: "Chapter 3-3 Past Perfect", page: 45, rule: "HAD + participio señala el hecho anterior dentro de una secuencia pasada.", eureka: "Past Perfect convierte una lista de evidencias en una secuencia precisa.", commonError: "Usar past simple, present perfect o la forma base después de had.", examples: [item("By the time we arrived, the train ___.", "had left", ["left", "had left", "has left"], "By the time we arrived, the train left.", "By the time we arrived, the train had left.", "El tren salió antes de nuestra llegada."), item("Had you ___ the message before the power failed?", "seen", ["saw", "seen", "see"], "Had you saw the message?", "Had you seen the message?", "Después de HAD usamos participio."), item("The thief ___ the package when the team checked.", "had not taken", ["did not take", "had not took", "had not taken"], "The thief did not had taken the package.", "The thief had not taken the package.", "La negación usa HAD NOT + participio.")] }
+);
+
+GRAMMAR_SKILLS.push(ARCHIVE_BEFORE_MIDNIGHT_SKILL);
+
+export const ARCHIVE_BEFORE_MIDNIGHT_CAPSULE: GrammarCapsule = {
+  id: "b1-grammar-archive-before-midnight", slug: "the-archive-before-midnight", level: "B1", blockId: "a-change-of-plan", blockTitle: "Historias bajo presión", skillId: ARCHIVE_BEFORE_MIDNIGHT_SKILL.id,
+  title: "The Archive Before Midnight", subtitle: "Reconstruye qué había ocurrido antes de cada evidencia", mission: "Detective lingüístico y reconstrucción temporal", learningFunction: "master", format: "timeline-choice", estimatedMinutes: 6, difficulty: 3, thumbnailVariant: "archive", interactionCount: 6,
+  prerequisiteIds: ARCHIVE_BEFORE_MIDNIGHT_SKILL.prerequisiteIds, tags: ["B1", "Grammar", "Past Perfect", "Past Simple", "Historias bajo presión", "detective lingüístico", "before", "by the time"], sourceReferences: [{ fileName: "Contenido original de LANCELOT", section: "The Archive Before Midnight", heading: "Ubicación sugerida por inferencia pedagógica" }], status: "published", featured: true, isNew: true,
+  interactions: ["alarm", "north-door", "tunnel", "transmission", "interrogation", "seal"].map((id, index) => ({ id: `b1-grammar-archive-before-midnight-${id}`, capsuleId: "b1-grammar-archive-before-midnight", skillId: ARCHIVE_BEFORE_MIDNIGHT_SKILL.id, type: "single-choice", prompt: `Evidence ${index + 1}`, instruction: "Reconstruye la secuencia.", answer: id, options: [id], hintSequence: ["Observa el orden temporal.", "Compara el participio.", "Prueba una escena paralela."], correctFeedback: "Evidencia restaurada.", guidance: "Past Perfect señala el hecho anterior.", difficulty: 3 }))
+};
+
+export const GRAMMAR_CAPSULES: GrammarCapsule[] = [
+  ...GRAMMAR_SKILLS.filter((skill) => skill.id !== ARCHIVE_BEFORE_MIDNIGHT_SKILL.id).flatMap((skill) => VARIANTS.map((variant, index) => {
   const id = `${skill.id}-${variant.suffix}`;
-  return { id, slug: id, level: skill.level, blockId: skill.blockId, blockTitle: skill.blockTitle, skillId: skill.id, title: variant.title(skill), subtitle: variant.subtitle, mission: variant.mission, learningFunction: variant.learningFunction, format: variant.format, estimatedMinutes: variant.minutes, difficulty: Math.min(5, 1 + index) as 1 | 2 | 3 | 4 | 5, thumbnailVariant: `${skill.level.toLowerCase()}-${index % 5}`, interactionCount: skill.examples.length, prerequisiteIds: skill.prerequisiteIds, tags: [skill.blockTitle, skill.title, skill.level, variant.learningFunction], sourceReferences: skill.sourceReferences, status: "published", featured: index === 0, isNew: index < 2, interactions: makeInteractions(skill, id, variant, index) };
-}));
+  return { id, slug: id, level: skill.level, blockId: skill.blockId, blockTitle: skill.blockTitle, skillId: skill.id, title: variant.title(skill), subtitle: variant.subtitle, mission: variant.mission, learningFunction: variant.learningFunction, format: variant.format, estimatedMinutes: variant.minutes, difficulty: Math.min(5, 1 + index) as 1 | 2 | 3 | 4 | 5, thumbnailVariant: `${skill.level.toLowerCase()}-${index % 5}`, interactionCount: skill.examples.length, prerequisiteIds: skill.prerequisiteIds, tags: [skill.blockTitle, skill.title, skill.level, variant.learningFunction], sourceReferences: skill.sourceReferences, status: "published", featured: index === 0, isNew: index < 2, interactions: makeInteractions(skill, id, variant, index) } as GrammarCapsule;
+  })),
+  ARCHIVE_BEFORE_MIDNIGHT_CAPSULE
+];
 
 export const GRAMMAR_LEVELS: { id: GrammarLevel; title: string; description: string }[] = [
   { id: "A1", title: "First signals", description: "Estructuras para entrar, nombrar y preguntar." },

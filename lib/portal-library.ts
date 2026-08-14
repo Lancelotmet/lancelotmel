@@ -37,7 +37,7 @@ export const LEARNING_AREAS = [
 ] as const;
 
 export type LearningAreaId = (typeof LEARNING_AREAS)[number]["id"];
-export type PortalLevel = "A1" | "A2" | "B1" | "B2";
+export type PortalLevel = "A1" | "A2" | "B1" | "B2" | "C1";
 
 export type PortalBlock = {
   id: string;
@@ -55,7 +55,8 @@ export const PORTAL_LEVELS: { id: PortalLevel; title: string; description: strin
   { id: "A1", title: "Primeras conexiones", description: "Para nombrar, pedir, responder y empezar a habitar el inglés." },
   { id: "A2", title: "Vida en movimiento", description: "Para desenvolverte en situaciones cotidianas con mayor independencia." },
   { id: "B1", title: "Mundo propio", description: "Para sostener conversaciones, historias, opiniones y decisiones." },
-  { id: "B2", title: "Voz con criterio", description: "Para argumentar, colaborar y comunicar ideas complejas con precisión." }
+  { id: "B2", title: "Voz con criterio", description: "Para argumentar, colaborar y comunicar ideas complejas con precisión." },
+  { id: "C1", title: "Precisión con intención", description: "Para editar, argumentar y elegir formas complejas con conciencia de estilo." }
 ];
 
 export const PORTAL_BLOCKS: PortalBlock[] = [
@@ -85,7 +86,11 @@ export const PORTAL_BLOCKS: PortalBlock[] = [
   { id: "b2-future", level: "B2", collection: "Transformar", title: "The Future We Build", subtitle: "Imaginación aplicada", synopsis: "Evalúa escenarios, plantea condiciones y comunica una visión posible.", atmosphere: "Futuro · propósito", cover: "future", focus: ["scenarios", "conditionals", "vision"] },
   { id: "b2-stories", level: "B2", collection: "Comprender", title: "Stories We Inherit", subtitle: "Memoria, identidad y lenguaje", synopsis: "Lee entre líneas, escucha relatos complejos y responde con sensibilidad.", atmosphere: "Memoria · identidad", cover: "stories", focus: ["narrative voice", "inference", "interpretation"] },
   { id: "b2-room", level: "B2", collection: "Construir", title: "The Room Where It Happens", subtitle: "Colaborar en lo complejo", synopsis: "Facilita una reunión, sintetiza tensiones y transforma conversación en acuerdo.", atmosphere: "Liderazgo · colaboración", cover: "room", focus: ["facilitation", "summaries", "negotiation"] },
-  { id: "b2-impact", level: "B2", collection: "Transformar", title: "Make It Matter", subtitle: "Comunicar para movilizar", synopsis: "Convierte una idea en un mensaje que inspira comprensión y acción.", atmosphere: "Impacto · transferencia", cover: "impact", focus: ["presentations", "storytelling", "impact"] }
+  { id: "b2-impact", level: "B2", collection: "Transformar", title: "Make It Matter", subtitle: "Comunicar para movilizar", synopsis: "Convierte una idea en un mensaje que inspira comprensión y acción.", atmosphere: "Impacto · transferencia", cover: "impact", focus: ["presentations", "storytelling", "impact"] },
+
+  { id: "advanced-accuracy", level: "C1", collection: "Editar", title: "Advanced Accuracy", subtitle: "Lo que una forma precisa puede cambiar", synopsis: "Edita, matiza y toma decisiones gramaticales que cambian la intención de un texto real.", atmosphere: "Precisión · criterio", cover: "ideas", focus: ["register", "inversion", "participle clauses"] },
+  { id: "c1-briefing", level: "C1", collection: "Sostener", title: "The Briefing", subtitle: "Una idea compleja, bien situada", synopsis: "Explica una postura, enlaza evidencia y construye claridad cuando hay más de una capa.", atmosphere: "Argumento · presencia", cover: "room", focus: ["noun clauses", "connectors", "stance"] },
+  { id: "c1-editorial", level: "C1", collection: "Transformar", title: "The Editorial Room", subtitle: "Editar sin perder una voz", synopsis: "Afina un texto para que cada forma diga exactamente lo que busca decir.", atmosphere: "Edición · intención", cover: "screen", focus: ["editing", "prepositions", "precision"] }
 ];
 
 export function blocksForLevel(level: PortalLevel) {

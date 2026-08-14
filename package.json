@@ -12,7 +12,7 @@
     "start": "node scripts/start-standalone.mjs",
     "start:3001": "set PORT=3001&& node .next/standalone/server.js",
     "typecheck": "tsc --noEmit",
-    "test": "node --test tests/*.test.mjs"
+    "test": "node --test tests/grammar-play.test.mjs tests/spelling-lab.test.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "latest",

@@ -54,6 +54,7 @@ export function LancelotLearningPortal({ learnerName, learnerEmail }: PortalProp
         <nav aria-label="Navegación del portal">
           <a href="#catalogo">Explorar</a>
           <a href="#experiencia">Mi bloque</a>
+          <Link href="/portal/grammar">Grammar Play</Link>
           <Link href="/citas">Agenda</Link>
         </nav>
         <div className="portal-account">
@@ -84,7 +85,7 @@ export function LancelotLearningPortal({ learnerName, learnerEmail }: PortalProp
       <section className="portal-levels" aria-label="Niveles de inglés">
         <div className="portal-section-heading">
           <p className="portal-kicker">Elige tu territorio</p>
-          <h2>Cuatro niveles. Ningún orden obligatorio.</h2>
+          <h2>Cinco niveles. Ningún orden obligatorio.</h2>
         </div>
         <div className="portal-level-grid">
           {PORTAL_LEVELS.map((item) => (
@@ -157,12 +158,18 @@ export function LancelotLearningPortal({ learnerName, learnerEmail }: PortalProp
               </button>
             ))}
           </div>
-          {activeBlock.id === "a2-trip" && area === "spelling" ? (
+            {activeBlock.id === "a2-trip" && area === "spelling" ? (
             <Link className="portal-featured-edition" href="/portal/the-small-trip/spelling-lab">
               <div><span>Edición interactiva · 01</span><strong>Spelling Lab:<br />Regular Past <em>-ed</em></strong><p>Una experiencia adaptativa para narrar lo que pasó durante el viaje.</p></div>
               <b>Entrar a la edición <i>→</i></b>
             </Link>
-          ) : null}
+            ) : null}
+            {area === "grammar" ? (
+              <Link className="portal-featured-edition" href={`/portal/grammar?level=${activeBlock.level}&block=${activeBlock.id}`}>
+                <div><span>Grammar Play · catálogo situado</span><strong>Elige una misión<br />de <em>pocos minutos</em></strong><p>Píldoras para descubrir, contrastar y usar Grammar desde el contexto de {activeBlock.title}.</p></div>
+                <b>Explorar Grammar <i>→</i></b>
+              </Link>
+            ) : null}
           <article className="portal-practice-stage">
             <div className="portal-stage-index">{activeArea.symbol}</div>
             <div>

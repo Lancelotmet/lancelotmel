@@ -1,8 +1,11 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import { createRequire } from "node:module";
 import path from "node:path";
 import { test } from "node:test";
-import ts from "typescript";
+
+const require = createRequire(import.meta.url);
+const ts = require("typescript");
 
 const root = process.cwd();
 

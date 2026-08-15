@@ -5,9 +5,9 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { FINAL_IDS, RULE_ORDER, RULES, RuleId, verbById, VerbItem, verbsForRule } from "@/lib/spelling-lab/content";
 import { AttemptRecord, diagnosticRoute, emptySkill, finalWeakRules, globalMastery, initialSkills, isCorrectPast, normalizeAnswer, scoreAttempt, SkillState } from "@/lib/spelling-lab/engine";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { saveLearnerProgress } from "@/lib/portal/learner-progress-client";
 
 const STORAGE_KEY = "lancelot-ed-spelling-v1";
-const PROGRESS_METADATA_KEY = "lancelot_spelling_lab_v1";
 type Screen = "intro" | "diagnostic" | "unit" | "final" | "complete";
 type Stage = "attempt" | "observe" | "compare" | "discover" | "rule" | "apply" | "transfer" | "model";
 type Session = { name: string; screen: Screen; diagnosticIndex: number; route: RuleId[]; unitIndex: number; stage: Stage; applyIndex: number; currentVerbId: string; errors: number; skills: Record<RuleId, SkillState>; history: AttemptRecord[]; finalIndex: number; finalCorrect: number; finalExplanations: number; usedHints: number; startedAt: number };
@@ -62,8 +62,7 @@ export function SpellingLab({ learnerName, learnerEmail, savedProgress }: { lear
     setSaveState("saving");
     const timer = window.setTimeout(async () => {
       try {
-        const { error } = await createSupabaseBrowserClient().auth.updateUser({ data: { [PROGRESS_METADATA_KEY]: session } });
-        if (error) throw error;
+        await saveLearnerProgress("spelling_lab", session);
         setSaveState("saved");
       } catch {
         setSaveState("local");

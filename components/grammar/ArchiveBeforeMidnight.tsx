@@ -8,6 +8,7 @@ import { emptyGrammarProgress, isGrammarAnswerCorrect, isGrammarProgress, record
 import { ARCHIVE_BEFORE_MIDNIGHT_CAPSULE } from "@/lib/grammar/curriculum";
 import { GrammarProgress } from "@/lib/grammar/types";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { saveLearnerProgress } from "@/lib/portal/learner-progress-client";
 
 const PROGRESS_KEY = "lancelot_grammar_play_v1";
 type SaveState = "saving" | "saved" | "local";
@@ -27,8 +28,7 @@ function useArchiveProgress(savedProgress: unknown) {
     setSaveState("saving");
     const timer = window.setTimeout(async () => {
       try {
-        const { error } = await createSupabaseBrowserClient().auth.updateUser({ data: { [PROGRESS_KEY]: progress } });
-        if (error) throw error;
+        await saveLearnerProgress("grammar_play", progress);
         setSaveState("saved");
       } catch {
         window.localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));

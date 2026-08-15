@@ -6,6 +6,7 @@ import { GRAMMAR_CAPSULES, GRAMMAR_LEVELS, GRAMMAR_SKILLS, capsuleBySlug, skillB
 import { emptyGrammarProgress, isGrammarAnswerCorrect, isGrammarProgress, moveGrammarCapsule, recommendedCapsules, recordGrammarAttempt, startGrammarCapsule } from "@/lib/grammar/engine";
 import { CapsuleFormat, GrammarCapsule, GrammarInteraction, GrammarLevel, GrammarProgress } from "@/lib/grammar/types";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { saveLearnerProgress } from "@/lib/portal/learner-progress-client";
 import { ArchiveBeforeMidnight } from "@/components/grammar/ArchiveBeforeMidnight";
 import { ARCHIVE_SLUG } from "@/lib/grammar/archive-before-midnight";
 
@@ -38,8 +39,7 @@ function useGrammarProgress(savedProgress: unknown) {
     setSaveState("saving");
     const timer = window.setTimeout(async () => {
       try {
-        const { error } = await createSupabaseBrowserClient().auth.updateUser({ data: { [PROGRESS_KEY]: progress } });
-        if (error) throw error;
+        await saveLearnerProgress("grammar_play", progress);
         setSaveState("saved");
       } catch {
         window.localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
